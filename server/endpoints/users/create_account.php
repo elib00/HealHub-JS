@@ -17,7 +17,7 @@ if($method === "POST"){
     $birthdate = mysqli_real_escape_string($connection, $userData["birthdate"]);
     $hashedPassword = password_hash($userData["password"], PASSWORD_BCRYPT);
     $password = mysqli_real_escape_string($connection, $hashedPassword);
-    $usertype = "0";
+    $usertype = 0;
  
     //check if the email is already taken
     $query = "SELECT * FROM tbluseraccount WHERE email = '$email'";
@@ -57,5 +57,7 @@ if($method === "POST"){
  
     // Close the database connection
     // mysqli_close($connection);
+}else{
+    echo "Type of method not supported or allowed in this endpoint.";
 }
  
