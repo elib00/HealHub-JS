@@ -39,20 +39,40 @@ if($method === "POST"){
         // If insertion succeeds, return a success response
         header('Content-Type: application/json');
         http_response_code(200);
+
+        //last inserted id
+        $user_id = mysqli_insert_id($connection);
  
-        // $userId = mysqli_insert_id($connection);
-        $query = "INSERT INTO tbluseraccount (email, username, password, user_type) VALUES ('$email', '$username', '$password', '$usertype')";
+        $query = "INSERT INTO tbluseraccount (account_id, email, username, password, user_type) VALUES ('$user_id', '$email', '$username', '$password', '$usertype')";
 
-        $response = [
-            "success" => true,
-            "message" => "Account created successfully"
-        ];
-
-        echo json_encode($response, JSON_PRETTY_PRINT);
+        if(mysqli_query($connection, $query)) {
+            $response = [
+                "success" => true,
+                "created_data" => [
+                    "user_profile" => [
+                        "firstname" => $firstname,
+                        "lastname" => $lastname,
+                        "gender" => $gender,
+                        "birthdate" => $birthdate
+                    ],
+                    "user_account" => [
+                        "email" => $email,
+                        "username" => $username,
+                        "user_type" => $usertype
+                    ]
+                ],
+                "message" => "Account created successfully"
+            ];
+    
+            echo json_encode($response, JSON_PRETTY_PRINT);
+        }else{
+            http_response_code(500); // Internal Server Error
+            echo json_encode(array('error' => 'Error creating user account'));
+        }
     } else {
         // If insertion fails, return an error response
         http_response_code(500); // Internal Server Error
-        echo json_encode(array('error' => 'Error creating user'));
+        echo json_encode(array('error' => 'Error creating user profile'));
     }
  
     // Close the database connection

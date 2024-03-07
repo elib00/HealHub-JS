@@ -1,25 +1,15 @@
 export const createUser = async (newUser) => {
-    // const firstname = document.getElementById("register-firstname").value;
-    // const lastname = document.getElementById("register-lastname").value;
-    // const email = document.getElementById("register-email").value;
-    // const password = document.getElementById("register-password").value;
-    // const gender = document.getElementById("register-gender").value;
-    // const birthday = document.getElementById("register-birthday").value;
-    // const username = document.getElementById("register-username").value;
-    // console.log(firstname, lastname, email, password);
-
-    // const newUser = {
-    //     firstname: firstname,
-    //     lastname: lastname,
-    //     email: email,
-    //     password: password,
-    //     gender: gender,
-    //     birthday: birthday,
-    //     username: username
-    // }
-    
     try{
-        const response = await axios.post("http://localhost:3000/HealHub/server/endpoints/users/create_account.php", newUser);
+        const response = await axios.post("http://localhost:3000/server/endpoints/users/create_account.php", newUser);
+        console.log(response.data);
+    }catch(err){
+        console.log(err.message);
+    }
+}
+
+export const validateUser = async (pendingUser) => {
+    try{
+        const response = await axios.post("http://localhost:3000/server/endpoints/users/validate_user.php", pendingUser);
         console.log(response.data);
     }catch(err){
         console.log(err.message);

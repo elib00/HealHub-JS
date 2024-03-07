@@ -12,13 +12,13 @@ if($method === "POST"){
     $email = mysqli_real_escape_string($connection, $userData["email"]);
     $inputPassword = mysqli_real_escape_string($connection, $userData["password"]);
  
-    $query = "SELECT * FROM user WHERE email = '$email'";
- 
+    $query = "SELECT * FROM tbluseraccount WHERE email = '$email'";
     $result = mysqli_query($connection, $query);
     if(mysqli_num_rows($result) == 0){
         die("User not found.");
     }
  
+    //get the row for the user account
     $row = mysqli_fetch_assoc($result);
     // echo json_encode($row);
  
@@ -26,14 +26,29 @@ if($method === "POST"){
     if(password_verify($inputPassword, $dbPassword)){
         header('Content-Type: application/json');
         http_response_code(200);
-   
-        $response = [
-            "message" => "User found in the database. Validation successful.",
-            "data" => $row
-        ];
- 
-        echo json_encode($response, JSON_PRETTY_PRINT);
-        exit();
+
+        //find the user profile associated with the email address and echo it back to the client
+        $target_id = $row["account_id"];
+        $query = "SELECT * FROM tbluserprofile WHERE user_id = $target_id";
+
+        $result = mysqli_query($connection, $query);
+        if($result){
+            $row = mysqli_fetch_assoc($result);
+            $response = [
+                "success" => true,
+                "user" => [
+                    "user_id" => $row["user_id"],
+                    "firstname" => $row["firstname"],
+                    "lastname" => $row["lastname"],
+                    "gender" => $row["gender"],
+                    "birthdate" => $row["birthdate"]
+                ],
+                "message" => "User found in the database. Validation successful.",
+            ];
+    
+            echo json_encode($response, JSON_PRETTY_PRINT);
+            exit();
+        }
     }
  
     http_response_code(404);
