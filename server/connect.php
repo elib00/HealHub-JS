@@ -5,7 +5,7 @@ $username = "root";
 $password = "";
 $databaseName = "dbnapiñasf1";
  
-$connection = new mysqli($serverName, $username, $password, $databaseName);
+$connection = mysqli_connect($serverName, $username, $password, $databaseName);
 
 
 if(!($connection)){
