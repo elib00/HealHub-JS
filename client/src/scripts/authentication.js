@@ -4,6 +4,7 @@ export const createUser = async (newUser) => {
         console.log(response.data);
     }catch(err){
         console.log(err.message);
+        console.log(err.response.data);
     }
 }
 
@@ -13,5 +14,6 @@ export const validateUser = async (pendingUser) => {
         console.log(response.data);
     }catch(err){
         console.log(err.message);
+        console.log(err.response.data);
     }
 }

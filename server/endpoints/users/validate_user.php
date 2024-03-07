@@ -15,7 +15,9 @@ if($method === "POST"){
     $query = "SELECT * FROM tbluseraccount WHERE email = '$email'";
     $result = mysqli_query($connection, $query);
     if(mysqli_num_rows($result) == 0){
-        die("User not found.");
+        http_response_code(404);
+        echo "User not found.";
+        die();
     }
  
     //get the row for the user account
@@ -27,7 +29,7 @@ if($method === "POST"){
         header('Content-Type: application/json');
         http_response_code(200);
 
-        //find the user profile associated with the email address and echo it back to the client
+        //find the user profile (using the user account_id) associated with the email address and echo it back to the client
         $target_id = $row["account_id"];
         $query = "SELECT * FROM tbluserprofile WHERE user_id = $target_id";
 
@@ -49,8 +51,8 @@ if($method === "POST"){
             echo json_encode($response, JSON_PRETTY_PRINT);
             exit();
         }
-    }
- 
-    http_response_code(404);
-    echo json_encode(array("error" => "User not found in the database"));
+    }else{
+        http_response_code(401);
+        echo json_encode(array("success" => false, "message" => "Incorrect password. Please try again."), JSON_PRETTY_PRINT);
+    }  
 }
