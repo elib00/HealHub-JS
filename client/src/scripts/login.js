@@ -23,9 +23,21 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
 
+    //button to go to registe page
     const btnNavigateToRegister = document.getElementById("nav-to-register");
     btnNavigateToRegister.addEventListener("click", () => {
         window.location.href="register.html";
+    });
+
+    //check box
+    const checkbox = document.getElementById("keep-logged-in");
+    const message = document.querySelector("[data-message]");
+    checkbox.addEventListener("change", () => {
+        if(checkbox.checked){
+            message.style.color = "#6e63f5";
+        }else{
+            message.style.color = "gray";
+        }
     });
 
 });
