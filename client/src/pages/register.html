@@ -10,78 +10,72 @@
 
   <script src="https://unpkg.com/axios/dist/axios.min.js" defer></script>
   <script type="module" src="../scripts/register.js" defer></script>
+  <link rel="stylesheet" href="../styles/index.css">
   <link rel="stylesheet" href="../styles/login.css">
+  <link rel="stylesheet" href="../styles/auth.css">
 </head>
 
 <body>
-
-
-  <nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <div class="container-fluid">
-      <a class="navbar-brand" href="#">HealHub</a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
-        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-          <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="index.html">Home</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="register.html">Register</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="login.html">Log In</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="about-us.html">About Us</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="contact-us.html">Contact Us</a>
-          </li>
-          <!-- <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                  Dropdown
-                </a>
-                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                  <li><a class="dropdown-item" href="#">Action</a></li>
-                  <li><a class="dropdown-item" href="#">Another action</a></li>
-                  <li><hr class="dropdown-divider"></li>
-                  <li><a class="dropdown-item" href="#">Something else here</a></li>
-                </ul>
-              </li> -->
-
-        </ul>
-        <!-- <form class="d-flex">
-              <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-              <button class="btn btn-outline-success" type="submit">Search</button>
-            </form> -->
+  <div data-auth-register class="page-wrapper">
+    <form id="register-form" class="auth-wrapper">
+      <div>
+        <h1>Empowering your healthcare journey</h1>
+        <p style="font-size: 1rem">Sign up now for seamless access</p>
+        <div style="width: 100%; height: 3px; background-color: gray"></div>
       </div>
-    </div>
-  </nav>
-
-  <div class="wrapper">
-    <header></header>
-
-    <div id="about-us-text">
-      REGISTER
-    </div>
-
-    <form id="register-form" data-signup-form class="content-box">
-      <input id="register-firstname" data-signup-input placeholder="Firstname">
-      <input id="register-lastname" data-signup-input placeholder="Lastname">
+      <div data-name-wrapper>
+        <input id="register-firstname" data-signup-input placeholder="Firstname">
+        <input id="register-lastname" data-signup-input placeholder="Lastname">
+      </div>
       <input id="register-email" data-signup-input type="email" placeholder="Email">
       <input id="register-password" data-signup-input placeholder="Password">
-      <input id="register-gender" data-signup-input placeholder="Gender">
-      <input id="register-birthdate" data-signup-input type="date" placeholder="Birthdate">
+      <div data-birthdate-wrapper>
+        <select id="month-dropdown">
+          <option value="1">Jan</option>
+          <option value="2">Feb</option>
+          <option value="3">Mar</option>
+          <option value="4">Apr</option>
+          <option value="5">May</option>
+          <option value="6">Jun</option>
+          <option value="7">Jul</option>
+          <option value="8">Aug</option>
+          <option value="9">Aug</option>
+          <option value="10">Oct</option>
+          <option value="11">Nov</option>
+          <option value="12">Dec</option>
+        </select>
+        <select id="day-dropdown">
+          <script>
+            for (let i = 1; i <= 31; i++) {
+              document.write(`<option value="${i}">${i}</option>`);
+            }
+          </script>
+        </select>
+        <select id="year-dropdown">
+          <script>
+            for (let i = 2024; i >= 1960; i--) {
+              document.write(`<option value="${i}">${i}</option>`);
+            }
+          </script>
+        </select>
+      </div>
+      <!-- <input id="register-birthdate" data-signup-input type="date" placeholder="Birthdate"> -->
+      <!-- <input id="register-gender" data-signup-input placeholder="Gender"> -->
+      <div data-gender-wrapper>
+        <div class="gender-choice-wrapper">
+          <p>Male</p>
+          <input type="radio" name="gender-option" value="Male">
+        </div>
+        <div class="gender-choice-wrapper">
+          <p>Female</p>
+          <input type="radio" name="gender-option" value="Female">
+        </div>
+      </div>
+
+
       <input id="register-username" data-signup-input placeholder="Username">
-      <button id="signup-button" class="button" type="submit">Log In</button>
+      <button id="signup-button" class="button" type="submit">Sign Up</button>
     </form>
-    <!-- <footer class="page-footer">
-      <h2>Joshua Napinas</h2>
-      <h4>BSCS - 2</h4>
-    </footer> -->
   </div>
 
 

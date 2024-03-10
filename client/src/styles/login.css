@@ -1,88 +1,78 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
-
-* {
-    padding: 0;
-    margin: 0;
-    font-family: "Poppins", sans-serif;
-}
-
 body {
-    height: 100vh;
-    box-sizing: border-box;
+  height: 100vh;
+  box-sizing: border-box;
 }
 
-[data-signup-input]{
-    width: 70%;
-    height: 3rem;
-    border-radius: 10px;
-    padding: 10px;
-    font-size: 1.2rem;
+[data-signup-input] {
+  width: 100%;
+  height: 3rem;
+  border-radius: 10px;
+  padding: 10px;
+  font-size: 1.2rem;
 }
 
-[data-login-input]{
-    width: 70%;
-    height: 3rem;
-    border-radius: 10px;
-    padding: 10px;
-    font-size: 1.2rem;
+[data-login-input] {
+  width: 70%;
+  height: 3rem;
+  border-radius: 10px;
+  padding: 10px;
+  font-size: 1.2rem;
 }
-
 
 .wrapper {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-    height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
 }
 
 .content-box {
-    width: 38%;
-    height: 60%;
-    background-color: gray;
-    padding: 10px;
-    border: solid black 1px;
-    border-radius: 10px;
-    box-sizing: border-box;
-    gap: 10px;
+  width: 38%;
+  height: 60%;
+  background-color: gray;
+  padding: 10px;
+  border: solid black 1px;
+  border-radius: 10px;
+  box-sizing: border-box;
+  gap: 10px;
 }
 
 [data-signup-form] {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: space-evenly;
+  display: flex;
+  flex-direction: column;
+  align-items: space-evenly;
+  justify-content: center;
 }
 
 [data-login-form] {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 30px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 30px;
 }
 
 .button {
-    width: 50%;
-    height: 40px;
-    border: solid black 1px;
-    border-radius: 10px;
-    background-color: green;
-    font-size: 1.2rem;
+  width: 50%;
+  height: 40px;
+  border: solid black 1px;
+  border-radius: 10px;
+  background-color: green;
+  font-size: 1.2rem;
 }
 
 .page-footer {
-    position: absolute;
-    bottom: 0;
-    width: 100%;
-    height: 100px;
-    background-color: blanchedalmond;
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 100px;
+  background-color: blanchedalmond;
 }
 
-#about-us-text{
-    font-size: 30px;
-    font-weight: bold;
-    color: #201550;
-
+#about-us-text {
+  font-size: 30px;
+  font-weight: bold;
+  color: #201550;
 }

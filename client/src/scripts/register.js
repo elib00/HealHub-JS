@@ -23,7 +23,11 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         return newUser;
-    }
+    };
+
+    const getGender = () => {
+        
+    };
 
     registerForm.addEventListener("submit", (event) => {
         event.preventDefault();
