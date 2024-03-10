@@ -12,9 +12,18 @@ body {
   box-sizing: border-box;
 }
 
+input {
+  border: solid black 1px;
+}
+
+select {
+  border: solid black 1px;
+}
+
 .page-wrapper {
   height: 100%;
   width: 100%;
+  background-color: #584cf5;
 }
 
 [data-auth-register].page-wrapper,

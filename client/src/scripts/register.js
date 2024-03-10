@@ -35,6 +35,46 @@ document.addEventListener("DOMContentLoaded", () => {
         createUser(newUser);
     });
 
+    const handleFocus = (elem)  => {
+        elem.style.outline = "solid #6e63f5 2px";
+        elem.style.border = "none";
+    }
 
+    const handleBlur = (elem) => {
+        elem.style.outline = "none";
+        elem.style.border = "solid black 1px";
+    }
 
+    //for the highlighting of outlines everytime an input is focused and blurred
+    const inputsWithFocus = document.querySelectorAll("[data-focus]");
+    inputsWithFocus.forEach((input) => {
+        input.addEventListener("focus", (event) => {
+            const elem = event.target;
+            handleFocus(elem);
+        })
+
+        input.addEventListener("blur", (event) => {
+            const elem = event.target;
+            handleBlur(elem);
+        });
+    });
+
+    //selecting the gender when the wrapper div of the input is clicked
+    //event delegation babyyyy
+    const radioWrappers = document.querySelectorAll("[data-gender-wrapper] .gender-choice-wrapper");
+    radioWrappers.forEach((wrapper) => {
+        wrapper.addEventListener("click", () => {
+            const radio = wrapper.querySelector('input[type="radio"]');
+            radio.checked = true;
+
+            //remove the focused status from the other wrappers
+            radioWrappers.forEach((otherWrapper) => {
+                if (otherWrapper !== wrapper) {
+                    otherWrapper.classList.remove("focused");
+                }
+            });
+
+            wrapper.classList.toggle("focused");
+        });
+    });
 });

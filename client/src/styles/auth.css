@@ -50,6 +50,7 @@
   padding: 20px;
   box-sizing: border-box;
   gap: 10px;
+  background-color: white;
 }
 
 .gender-choice-wrapper {
@@ -72,16 +73,27 @@
   margin-left: auto;
 }
 
+.btn-sign-up {
+  width: 50%;
+  height: 40px;
+  border: solid #6e63f5 1px;
+  border-radius: 20px;
+  background-color: #6e63f5;
+  font-size: 1.2rem;
+  color: white;
+}
+
+.focused {
+  border: solid #6e63f5 1px;
+}
+
 select {
   max-width: 200px;
   max-height: 150px;
   flex: 1;
   padding: 8px;
   font-size: 1rem;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  background-color: #fff;
-  overflow-y: auto;
+  border-radius: 10px;
 }
 
 label input {
