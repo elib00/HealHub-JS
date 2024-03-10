@@ -36,18 +36,36 @@
   gap: 10px;
 }
 
-.auth-wrapper {
+.auth-register-wrapper {
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
   align-items: center;
-  height: 85%;
+  height: 90%;
   width: 40%;
   min-width: 500px;
   min-height: 500px;
-  border: solid black 1px;
-  border-radius: 10px;
-  padding: 20px;
+  box-shadow: 8px 8px 8px rgba(0, 0, 0, 0.5);
+  border-radius: 15px;
+  padding-right: 30px;
+  padding-left: 30px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  box-sizing: border-box;
+  gap: 5px;
+  background-color: white;
+}
+
+.auth-login-wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  height: fit-content;
+  width: 70%;
+  margin-top: 50px;
+  margin-bottom: 50px;
+  border-radius: 15px;
   box-sizing: border-box;
   gap: 10px;
   background-color: white;
@@ -73,8 +91,10 @@
   margin-left: auto;
 }
 
-.btn-sign-up {
-  width: 50%;
+.btn-sign-up,
+.btn-login {
+  margin-top: 5px;
+  width: 55%;
   height: 40px;
   border: solid #6e63f5 1px;
   border-radius: 20px;
@@ -83,8 +103,33 @@
   color: white;
 }
 
+.btn-login {
+  width: 100%;
+}
+
+.btn-create-account {
+  height: 50px;
+  width: 40%;
+  border: solid white 2px;
+  border-radius: 20px;
+  background-color: transparent;
+  font-size: 1.5rem;
+  color: white;
+  margin: 20px;
+}
+
+.nav-link {
+  text-decoration: none;
+  padding: 0;
+}
+
+.nav-link:hover {
+  text-decoration: underline;
+  padding: 0;
+}
+
 .focused {
-  border: solid #6e63f5 1px;
+  border: solid #6e63f5 2px;
 }
 
 select {
@@ -98,4 +143,43 @@ select {
 
 label input {
   border: solid black 1px;
+}
+
+/* login */
+
+#right-content {
+  display: flex;
+  flex-direction: column;
+  /* position: relative; */
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  width: 55%;
+  /* border: solid black 1px; */
+  background-color: white;
+}
+
+#left-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  width: 45%;
+}
+
+.socials-wrapper {
+  flex: 1;
+  width: 100%;
+  background-color: antiquewhite;
+}
+
+.greeting-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 50%;
+  width: 100%;
+  /* border: solid black 1px; */
 }

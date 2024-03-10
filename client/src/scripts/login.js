@@ -22,4 +22,10 @@ document.addEventListener("DOMContentLoaded", () => {
         validateUser(pendingUser);
     });
 
+
+    const btnNavigateToRegister = document.getElementById("nav-to-register");
+    btnNavigateToRegister.addEventListener("click", () => {
+        window.location.href="register.html";
+    });
+
 });

@@ -45,10 +45,16 @@ document.addEventListener("DOMContentLoaded", () => {
         elem.style.border = "solid black 1px";
     }
 
-    //for the highlighting of outlines everytime an input is focused and blurred
     const inputsWithFocus = document.querySelectorAll("[data-focus]");
+    const radioWrappers = document.querySelectorAll("[data-gender-wrapper] .gender-choice-wrapper");
+
+    //for the highlighting of outlines everytime an input is focused and blurred
     inputsWithFocus.forEach((input) => {
         input.addEventListener("focus", (event) => {
+            radioWrappers.forEach((wrapper) => {
+                wrapper.classList.remove("focused");
+            });
+
             const elem = event.target;
             handleFocus(elem);
         })
@@ -61,7 +67,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
     //selecting the gender when the wrapper div of the input is clicked
     //event delegation babyyyy
-    const radioWrappers = document.querySelectorAll("[data-gender-wrapper] .gender-choice-wrapper");
     radioWrappers.forEach((wrapper) => {
         wrapper.addEventListener("click", () => {
             const radio = wrapper.querySelector('input[type="radio"]');
@@ -77,4 +82,5 @@ document.addEventListener("DOMContentLoaded", () => {
             wrapper.classList.toggle("focused");
         });
     });
+
 });

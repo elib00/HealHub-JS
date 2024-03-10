@@ -16,6 +16,10 @@ input {
   border: solid black 1px;
 }
 
+p {
+  margin: 0;
+}
+
 select {
   border: solid black 1px;
 }
