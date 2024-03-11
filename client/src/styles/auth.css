@@ -36,6 +36,16 @@
   gap: 10px;
 }
 
+[data-focus]:focus {
+  outline: solid #6e63f5 2px;
+  border: none;
+}
+
+[data-focus]:not(:focus) {
+  outline: none;
+  border: solid black 1px;
+}
+
 .auth-register-wrapper {
   display: flex;
   flex-direction: column;

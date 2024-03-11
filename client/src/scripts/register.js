@@ -48,22 +48,20 @@ document.addEventListener("DOMContentLoaded", () => {
     const inputsWithFocus = document.querySelectorAll("[data-focus]");
     const radioWrappers = document.querySelectorAll("[data-gender-wrapper] .gender-choice-wrapper");
 
-    //for the highlighting of outlines everytime an input is focused and blurred
-    inputsWithFocus.forEach((input) => {
-        input.addEventListener("focus", (event) => {
-            radioWrappers.forEach((wrapper) => {
-                wrapper.classList.remove("focused");
-            });
+    //for the highlighting of outlines everytime an input is focused and blurred (js is slow so css pseudo-classes nalang)
+    // inputsWithFocus.forEach((input) => {
+    //     input.addEventListener("focus", (event) => {
+    //         radioWrappers.forEach((wrapper) => {
+    //             wrapper.classList.remove("focused");
+    //         });
 
-            const elem = event.target;
-            handleFocus(elem);
-        })
+    //         handleFocus(input);
+    //     })
 
-        input.addEventListener("blur", (event) => {
-            const elem = event.target;
-            handleBlur(elem);
-        });
-    });
+    //     input.addEventListener("blur", () => {
+    //         handleBlur(input);
+    //     });
+    // });
 
     //selecting the gender when the wrapper div of the input is clicked
     //event delegation babyyyy
@@ -80,6 +78,15 @@ document.addEventListener("DOMContentLoaded", () => {
             });
 
             wrapper.classList.toggle("focused");
+        });
+    });
+
+    //remove ang outline sa mga inputs if ma click ang wrappers
+    inputsWithFocus.forEach((input) => {
+        input.addEventListener("focus", () => {
+            radioWrappers.forEach((wrapper) =>{
+                wrapper.classList.remove("focused");
+            }); 
         });
     });
 

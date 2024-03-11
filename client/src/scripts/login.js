@@ -3,6 +3,16 @@ import { validateUser } from "./authentication.js";
 document.addEventListener("DOMContentLoaded", () => {
     const loginForm = document.getElementById("login-form");
 
+    const handleFocus = (elem)  => {
+        elem.style.outline = "solid #6e63f5 2px";
+        elem.style.border = "none";
+    }
+
+    const handleBlur = (elem) => {
+        elem.style.outline = "none";
+        elem.style.border = "solid black 1px";
+    }
+
     const getUserData = () => {
         const email = document.getElementById("login-email").value;
         const password = document.getElementById("login-password").value;
@@ -39,5 +49,17 @@ document.addEventListener("DOMContentLoaded", () => {
             message.style.color = "gray";
         }
     });
+
+    //adding focus effects to the input (js is slow)
+    // const focusedInputs = document.querySelectorAll("[data-focus]");
+    // focusedInputs.forEach((input) => {
+    //     input.addEventListener("focus", () => {
+    //         handleFocus(input);
+    //     });
+
+    //     input.addEventListener("blur", () => {
+    //         handleBlur(input);
+    //     });
+    // });
 
 });
