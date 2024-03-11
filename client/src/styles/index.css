@@ -24,6 +24,10 @@ select {
   border: solid black 1px;
 }
 
+option {
+  max-height: 200px;
+}
+
 .page-wrapper {
   height: 100%;
   width: 100%;

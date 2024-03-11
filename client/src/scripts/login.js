@@ -49,17 +49,4 @@ document.addEventListener("DOMContentLoaded", () => {
             message.style.color = "gray";
         }
     });
-
-    //adding focus effects to the input (js is slow)
-    // const focusedInputs = document.querySelectorAll("[data-focus]");
-    // focusedInputs.forEach((input) => {
-    //     input.addEventListener("focus", () => {
-    //         handleFocus(input);
-    //     });
-
-    //     input.addEventListener("blur", () => {
-    //         handleBlur(input);
-    //     });
-    // });
-
 });

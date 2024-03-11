@@ -48,21 +48,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const inputsWithFocus = document.querySelectorAll("[data-focus]");
     const radioWrappers = document.querySelectorAll("[data-gender-wrapper] .gender-choice-wrapper");
 
-    //for the highlighting of outlines everytime an input is focused and blurred (js is slow so css pseudo-classes nalang)
-    // inputsWithFocus.forEach((input) => {
-    //     input.addEventListener("focus", (event) => {
-    //         radioWrappers.forEach((wrapper) => {
-    //             wrapper.classList.remove("focused");
-    //         });
-
-    //         handleFocus(input);
-    //     })
-
-    //     input.addEventListener("blur", () => {
-    //         handleBlur(input);
-    //     });
-    // });
-
     //selecting the gender when the wrapper div of the input is clicked
     //event delegation babyyyy
     radioWrappers.forEach((wrapper) => {
@@ -90,4 +75,17 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     });
 
+    //set the default birthdate input to the current date
+    const currentDate = new Date();
+    const day = currentDate.getDate();
+    const month = currentDate.getMonth() + 1;
+    const year = currentDate.getFullYear();
+
+    const monthDropdown = document.getElementById("month-dropdown");
+    const dayDropdown = document.getElementById("day-dropdown");
+    const yearDropdown = document.getElementById("year-dropdown");
+
+    monthDropdown.value = month;
+    dayDropdown.value = day;
+    yearDropdown.value = year;
 });
