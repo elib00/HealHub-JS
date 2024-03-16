@@ -1,5 +1,10 @@
 @import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
 
+*{
+  margin: 0;
+  padding: 0;
+}
+
 
 body {
   background-color: rgb(252, 252, 252);
@@ -12,84 +17,30 @@ p {
   margin: 0;
 }
 
-.page-header{
-  width: 100%;
-  height: 101px;
-  background-color: blueviolet;
-  display: flex;
-}
-
-.page-logo{
-    font-family: montserrat;
-    padding-top: 10px;
-    color: white;
-    /* background-color: blue; */
-    padding-left: 70px;
-    width: fit-content;
-    height: fit-content;
-    font-size: 35px;
-    line-height: 80px;
-    font-weight: 600;
-}
-
-.page-navbar{
-    /* background-color: white; */
-    padding-top: 23px;
-    margin-left: 3%;
-  }
-
-  li {
-    float: left;
-  }
-  ul{
-    list-style-type: none;
-  }
-
-  li a {
-    display: block;
-    color: white;
-    text-align: center;
-    padding: 14px 16px;
-    text-decoration: none;
-    font-family: montserrat;
-    font-size: 14px;
-    font-weight: 600;
-    letter-spacing: 2.16px;
-    line-height: 12px;
-    margin-left: 8.16px;
-    margin-right: 8.16px;
-    padding-bottom: 7.4px;
-    padding-top: 5.4px;
-    text-transform: uppercase;
-  }
-
-  .navbar-button-container{
-    /* background-color: pink; */
-    margin-left: 18%;
-    padding-top: 30px;
-    width: 300px;
-  }
-
-  .dashboard-text{
+.dashboard-text{
     margin-top: 5%;
     font-size: 20px;
     font-weight: bold;
     margin-left: 7%;
     display: flex;
-  }
+}
   
-  .dashboard-description{
+.dashboard-description{
     font-size: 10px;
     font-weight: 400;
     margin-left: 20px;
     margin-top: 7px;
+}
 
-  }
-
-  .hello-user{
+.hello-user{
     background-color: pink;
     width: 700px;
     height: 180px;
     margin-left: 7%;
     margin-top: 3%;
-  }
+}
+
+#btn-logout{
+    background-color: rgb(218, 28, 28);
+    margin-left: 70%;
+}

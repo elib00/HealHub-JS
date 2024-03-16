@@ -8,7 +8,10 @@
 body {
   background-color: rgb(252, 252, 252);
   height: 100vh;
+  width: 100vw;
+  overflow-x: hidden;
   box-sizing: border-box;
+  scrollbar-gutter: stable;
   font-family: montserrat;
 }
 
@@ -38,7 +41,7 @@ p {
 
 .page-navbar{
     /* background-color: white; */
-    padding-top: 30px;
+    padding-top: 40px;
     margin-left: 3%;
   }
 
@@ -74,7 +77,7 @@ p {
     width: 300px;
   }
 
-  .register-button, .login-button{
+  .buttons{
     font-family: montserrat;
     font-weight: 600;
     text-transform: uppercase;
@@ -83,20 +86,25 @@ p {
     padding: 10px;
     width: 120px;
     border: none;
-    background-color: #007bff;
     color: white;
-  }
+}
 
-  .register-button{
+  #btn-login, #btn-register{
+    background-color: #007bff;
+}
+
+  #btn-register{
     margin-left: 15px;
-  }
+    
+}
 
-  #page-contents-container {
+
+  .page-contents-container {
   height: 100%;
   width: 100%;
   display: flex;
-  flex-direction: column;
-  align-items: center;
+  flex-direction: column; 
+  align-items: center; 
   /* background-color: blue; */
 }
 
@@ -161,9 +169,8 @@ p.header-lowtext{
 
 .trust-us-container{
   margin-top: 50px;
-  /* background-color: green; */
-  display: flex;
-  flex-direction: column;
+  /* background-color: green;  */
+  
 }
 
 .trust-us-text {
@@ -176,9 +183,9 @@ p.header-lowtext{
 
 .about-us-container{
   display: flex;
-  margin-top: 50px;
+  margin-top: 50px; 
   margin-left: 1%;
-  /* background-color: orange; */
+   /* background-color: orange;  */
   height: 200px;
 }
 
@@ -191,23 +198,23 @@ p.header-lowtext{
 
 .about-us-two{
   margin-left: 50px;
-  width: 250px;
-  height: 230px;
+  width: 250px; 
+  height: 230px; 
   background-color: #e0e0e2;
 }
 
 
 .about-us-three{
   margin-left: 50px;
-  width: 250px;
-  height: 230px;
+   width: 250px; 
+  height: 230px; 
   background-color: #e0e0e2;
 }
 
 .about-us-four{
   margin-left: 50px;
-  width: 250px;
-  height: 230px;
+  width: 250px; 
+   height: 230px; 
   background-color: #e0e0e2;
 }
 
