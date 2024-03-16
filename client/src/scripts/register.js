@@ -2,12 +2,13 @@ import { createUser } from "./authentication.js";
 
 document.addEventListener("DOMContentLoaded", () => {
     const registerForm = document.getElementById("register-form");
+    const modalResponseMessage = document.getElementById("modal-response-message");
 
     const getUserData = () => {
-        const firstname = document.getElementById("register-firstname").value;
-        const lastname = document.getElementById("register-lastname").value;
-        const email = document.getElementById("register-email").value;
-        const password = document.getElementById("register-password").value;
+        const firstname = document.getElementById("register-firstname").value.trim();
+        const lastname = document.getElementById("register-lastname").value.trim();
+        const email = document.getElementById("register-email").value.trim();
+        const password = document.getElementById("register-password").value.trim();
         let gender = null;
 
         const genderRadios = document.querySelectorAll("[name=gender-option]");
@@ -22,7 +23,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const day = document.getElementById("day-dropdown").value
         const birthdate = `${year}-${month}-${day}`;
         
-        const username = document.getElementById("register-username").value;
+        const username = document.getElementById("register-username").value.trim();
             
         const newUser = {
             firstname: firstname,
@@ -40,10 +41,13 @@ document.addEventListener("DOMContentLoaded", () => {
     //create new user
     registerForm.addEventListener("submit", async (event) => {
         event.preventDefault();
-        const newUser = getUserData();
-        const result = await createUser(newUser);
+        const response = getUserData();
+        const result = await createUser({...response});
         if(result.success){
             window.location.replace("login.html");
+        }else{
+            modalResponseMessage.textContent = result.message;
+            $("#response-modal").modal("show");
         }
     });
 
@@ -99,5 +103,5 @@ document.addEventListener("DOMContentLoaded", () => {
 
     monthDropdown.value = month;
     dayDropdown.value = day;
-    yearDropdown.value = year;
+    yearDropdown.value = year; 
 });

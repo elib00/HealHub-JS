@@ -21,17 +21,30 @@ if($method === "POST"){
  
     //check if the email is already taken
     $query = "SELECT * FROM tbluseraccount WHERE email = '$email'";
- 
-    //check if the credentials are already taken and if they are, kill the script
     $result = mysqli_query($connection, $query);
-
     if($result === false){
         die("Error in query: " . mysqli_error($connection));
     }
 
+    //check if the email is already taken and if it is, kill the script
     if(mysqli_num_rows($result) > 0){
-        die("Email address already in use.");
+        echo json_encode(array("success" => false, "message" => "Email address already in use"));
+        die();
     }
+
+    //check if the username is already taken
+    $query = "SELECT * FROM tbluseraccount WHERE username = '$username'";
+    $result = mysqli_query($connection, $query);
+    if($result === false){
+        die("Error in query: " . mysqli_error($connection));
+    }
+    
+    //check if the username is already taken and if it is, kill the script
+    if(mysqli_num_rows($result) > 0){
+        echo json_encode(array("success" => false, "message" => "Username already in use"));
+        die();
+    }
+
  
     $query = "INSERT INTO tbluserprofile (firstname, lastname, gender, birthdate) VALUES ('$firstname', '$lastname', '$gender', '$birthdate')";
  
@@ -67,12 +80,12 @@ if($method === "POST"){
             echo json_encode($response, JSON_PRETTY_PRINT);
         }else{
             http_response_code(500); // Internal Server Error
-            echo json_encode(array('error' => 'Error creating user account'));
+            echo json_encode(array("success" => false, "message" => "Error creating user account"). JSON_PRETTY_PRINT);
         }
     } else {
         // If insertion fails, return an error response
         http_response_code(500); // Internal Server Error
-        echo json_encode(array('error' => 'Error creating user profile'));
+        echo json_encode(array("success" => false, "message" => "Error creating user profile"), JSON_PRETTY_PRINT);
     }
  
     // Close the database connection

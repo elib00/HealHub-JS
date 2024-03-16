@@ -9,7 +9,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const responseContainer = document.querySelector("[data-response-container]");
     const checkbox = document.getElementById("keep-logged-in");
     const message = document.querySelector("[data-message]");
-
+    
     const getUserData = () => {
         const email = document.getElementById("login-email").value;
         const password = document.getElementById("login-password").value;
@@ -29,7 +29,7 @@ document.addEventListener("DOMContentLoaded", () => {
         event.preventDefault();
         const pendingUser = getUserData();
         console.log(pendingUser);
-        const result = await validateUser(pendingUser);
+        const result = await validateUser({...pendingUser});
         if(result.success){
             console.log(result.success);
             console.log("hi");
