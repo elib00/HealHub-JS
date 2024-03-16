@@ -7,6 +7,8 @@ document.addEventListener("DOMContentLoaded", () => {
     const loginPasswordInput = document.getElementById("login-password");
     const errorMessage = document.getElementById("error-message");
     const errorContainer = document.querySelector("[data-error-container]");
+    const checkbox = document.getElementById("keep-logged-in");
+    const message = document.querySelector("[data-message]");
 
     const getUserData = () => {
         const email = document.getElementById("login-email").value;
@@ -31,7 +33,10 @@ document.addEventListener("DOMContentLoaded", () => {
         if(result.success){
             console.log(result.success);
             console.log("hi");
-            setCookie("currentUser", result.user, 1);
+            if(checkbox.checked){
+                setCookie("currentUser", result.user, 1);
+            }
+           
             window.location.href = "dashboard.html";
         }else{
             errorMessage.textContent = result.message;
@@ -43,7 +48,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 loginPasswordInput.classList.remove("login-error");
                 errorMessage.textContent = "";
                 errorContainer.classList.toggle("error-wrapper");
-            }, 1000);
+            }, 1500);
         }
     });
 
@@ -55,8 +60,6 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     //check box
-    const checkbox = document.getElementById("keep-logged-in");
-    const message = document.querySelector("[data-message]");
     checkbox.addEventListener("change", () => {
         if(checkbox.checked){
             message.style.color = "#6e63f5";
