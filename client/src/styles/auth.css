@@ -204,3 +204,9 @@ select {
   color: white;
   border: solid gray 1px;
 }
+
+.success-wrapper {
+  background-color: green;
+  color: white;
+  border: solid gray 1px;
+}
