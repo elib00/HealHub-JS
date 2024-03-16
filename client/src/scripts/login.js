@@ -1,9 +1,12 @@
 import { validateUser } from "./authentication.js";
+import { setCookie } from "./cookieHandler.js";
 
 document.addEventListener("DOMContentLoaded", () => {
     const loginForm = document.getElementById("login-form");
     const loginEmailInput = document.getElementById("login-email");
     const loginPasswordInput = document.getElementById("login-password");
+    const errorMessage = document.getElementById("error-message");
+    const errorContainer = document.querySelector("[data-error-container]");
 
     const getUserData = () => {
         const email = document.getElementById("login-email").value;
@@ -28,13 +31,18 @@ document.addEventListener("DOMContentLoaded", () => {
         if(result.success){
             console.log(result.success);
             console.log("hi");
+            setCookie("currentUser", result.user, 1);
             window.location.href = "dashboard.html";
         }else{
+            errorMessage.textContent = result.message;
             loginEmailInput.classList.add("login-error");
             loginPasswordInput.classList.add("login-error");
+            errorContainer.classList.toggle("error-wrapper");
             setTimeout(() => {
                 loginEmailInput.classList.remove("login-error");
                 loginPasswordInput.classList.remove("login-error");
+                errorMessage.textContent = "";
+                errorContainer.classList.toggle("error-wrapper");
             }, 1000);
         }
     });

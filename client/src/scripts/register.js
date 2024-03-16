@@ -37,10 +37,6 @@ document.addEventListener("DOMContentLoaded", () => {
         return newUser;
     };
 
-    const getGender = () => {
-        
-    };
-
     //create new user
     registerForm.addEventListener("submit", async (event) => {
         event.preventDefault();

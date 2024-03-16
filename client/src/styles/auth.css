@@ -71,12 +71,13 @@
 .auth-login-wrapper {
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: space-evenly;
+  justify-content: center;
   align-items: center;
   height: fit-content;
   width: 70%;
   margin-top: 50px;
-  margin-bottom: 50px;
+  margin-bottom: 20px;
   border-radius: 15px;
   box-sizing: border-box;
   gap: 10px;
@@ -196,4 +197,10 @@ select {
 .login-error {
   outline: solid red 2px !important; /*important to override data-focus*/
   border: none !important;
+}
+
+.error-wrapper {
+  background-color: red;
+  color: white;
+  border: solid gray 1px;
 }
