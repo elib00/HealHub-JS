@@ -2,16 +2,8 @@ import { validateUser } from "./authentication.js";
 
 document.addEventListener("DOMContentLoaded", () => {
     const loginForm = document.getElementById("login-form");
-
-    const handleFocus = (elem)  => {
-        elem.style.outline = "solid #6e63f5 2px";
-        elem.style.border = "none";
-    }
-
-    const handleBlur = (elem) => {
-        elem.style.outline = "none";
-        elem.style.border = "solid black 1px";
-    }
+    const loginEmailInput = document.getElementById("login-email");
+    const loginPasswordInput = document.getElementById("login-password");
 
     const getUserData = () => {
         const email = document.getElementById("login-email").value;
@@ -24,19 +16,34 @@ document.addEventListener("DOMContentLoaded", () => {
 
         return pendingUser;
     }
+    
 
-    loginForm.addEventListener("submit", (event) => {
+    //submitting the login form
+    //adding error login style
+    loginForm.addEventListener("submit", async (event) => {
         event.preventDefault();
         const pendingUser = getUserData();
         console.log(pendingUser);
-        validateUser(pendingUser);
+        const result = await validateUser(pendingUser);
+        if(result.success){
+            console.log(result.success);
+            console.log("hi");
+            window.location.href = "dashboard.html";
+        }else{
+            loginEmailInput.classList.add("login-error");
+            loginPasswordInput.classList.add("login-error");
+            setTimeout(() => {
+                loginEmailInput.classList.remove("login-error");
+                loginPasswordInput.classList.remove("login-error");
+            }, 1000);
+        }
     });
 
 
-    //button to go to registe page
+    //button to go to register page
     const btnNavigateToRegister = document.getElementById("nav-to-register");
     btnNavigateToRegister.addEventListener("click", () => {
-        window.location.href="register.html";
+        window.location.href = "register.html";
     });
 
     //check box

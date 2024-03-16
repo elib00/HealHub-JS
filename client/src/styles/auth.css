@@ -153,10 +153,6 @@ select {
   border-radius: 10px;
 }
 
-label input {
-  border: solid black 1px;
-}
-
 /* login */
 
 #right-content {
@@ -195,4 +191,9 @@ label input {
   height: 50%;
   width: 100%;
   /* border: solid black 1px; */
+}
+
+.login-error {
+  outline: solid red 2px !important; /*important to override data-focus*/
+  border: none !important;
 }

@@ -16,7 +16,7 @@ if($method === "POST"){
     $result = mysqli_query($connection, $query);
     if(mysqli_num_rows($result) == 0){
         http_response_code(404);
-        echo "User not found.";
+        echo json_encode(array("success" => false, "message" => "User not found. Please try again."), JSON_PRETTY_PRINT);
         die();
     }
  

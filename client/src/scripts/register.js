@@ -8,8 +8,20 @@ document.addEventListener("DOMContentLoaded", () => {
         const lastname = document.getElementById("register-lastname").value;
         const email = document.getElementById("register-email").value;
         const password = document.getElementById("register-password").value;
-        const gender = document.getElementById("register-gender").value;
-        const birthdate = document.getElementById("register-birthdate").value;
+        let gender = null;
+
+        const genderRadios = document.querySelectorAll("[name=gender-option]");
+        genderRadios.forEach((radio) => {
+            if(radio.checked){
+                gender = radio.value;
+            }
+        });
+
+        const month = document.getElementById("month-dropdown").value
+        const year = document.getElementById("year-dropdown").value
+        const day = document.getElementById("day-dropdown").value
+        const birthdate = `${year}-${month}-${day}`;
+        
         const username = document.getElementById("register-username").value;
             
         const newUser = {
@@ -29,10 +41,14 @@ document.addEventListener("DOMContentLoaded", () => {
         
     };
 
-    registerForm.addEventListener("submit", (event) => {
+    //create new user
+    registerForm.addEventListener("submit", async (event) => {
         event.preventDefault();
         const newUser = getUserData();
-        createUser(newUser);
+        const result = await createUser(newUser);
+        if(result.success){
+            window.location.replace("login.html");
+        }
     });
 
     const handleFocus = (elem)  => {
