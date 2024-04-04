@@ -3,6 +3,7 @@ import { createUser } from "./authentication.js";
 document.addEventListener("DOMContentLoaded", () => {
     const registerForm = document.getElementById("register-form");
     const modalResponseMessage = document.getElementById("modal-response-message");
+    const responseTitle = document.getElementById("response-title");
 
     const getUserData = () => {
         const firstname = document.getElementById("register-firstname").value.trim();
@@ -44,22 +45,20 @@ document.addEventListener("DOMContentLoaded", () => {
         const response = getUserData();
         const result = await createUser({...response});
         if(result.success){
-            window.location.replace("login.html");
+            responseTitle.textContent = "ACCOUNT CREATION SUCCESS"
+            responseTitle.style.color = "green";
+            modalResponseMessage.textContent = "User created successfully";
+            $("#response-modal").modal("show");
+            setTimeout(() => {
+                window.location.replace("login.html");
+            }, 2000);
         }else{
+            responseTitle.textContent = "ACCOUNT CREATION FAILURE";
+            responseTitle.style.color = "red";
             modalResponseMessage.textContent = result.message;
             $("#response-modal").modal("show");
         }
     });
-
-    const handleFocus = (elem)  => {
-        elem.style.outline = "solid #6e63f5 2px";
-        elem.style.border = "none";
-    }
-
-    const handleBlur = (elem) => {
-        elem.style.outline = "none";
-        elem.style.border = "solid black 1px";
-    }
 
     const inputsWithFocus = document.querySelectorAll("[data-focus]");
     const radioWrappers = document.querySelectorAll("[data-gender-wrapper] .gender-choice-wrapper");

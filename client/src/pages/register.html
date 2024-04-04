@@ -24,7 +24,7 @@
     <div class="modal-dialog modal-dialog-centered" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title">Account creation failed</h5>
+          <h5 id="response-title" class="modal-title"></h5>
           <button type="button" class="btn btn-danger" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
@@ -54,9 +54,10 @@
         <input id="register-lastname" data-focus data-signup-input placeholder="Lastname" required>
       </div>
       <input id="register-email" data-focus data-signup-input type="email" placeholder="Email" required>
+      <input id="register-username" data-focus data-signup-input placeholder="Username" required>
       <input id="register-password" data-focus data-signup-input placeholder="Password" required>
       <div data-birthdate-wrapper>
-        <select data-focus id="month-dropdown">
+        <select data-focus id="month-dropdown" style="height: 100%">
           <option value="1">Jan</option>
           <option value="2">Feb</option>
           <option value="3">Mar</option>
@@ -70,14 +71,14 @@
           <option value="11">Nov</option>
           <option value="12">Dec</option>
         </select>
-        <select data-focus id="day-dropdown">
+        <select data-focus id="day-dropdown" style="height: 100%">
           <script>
             for (let i = 1; i <= 31; i++) {
               document.write(`<option value="${i}">${i}</option>`);
             }
           </script>
         </select>
-        <select data-focus id="year-dropdown">
+        <select data-focus id="year-dropdown" style="height: 100%">
           <script>
             for (let i = 2024; i >= 1960; i--) {
               document.write(`<option value="${i}">${i}</option>`);
@@ -95,8 +96,6 @@
           <input type="radio" name="gender-option" value="Female">
         </div>
       </div>
-
-      <input id="register-username" data-focus data-signup-input placeholder="Username" required>
       <button id="signup-button" class="btn-sign-up" type="submit">Sign Up</button>
       <a class="nav-link" href="login.html">Already have an account?</a>
     </form>

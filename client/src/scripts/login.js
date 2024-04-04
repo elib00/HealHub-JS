@@ -39,6 +39,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
             responseContainer.classList.toggle("success-wrapper");
             responseMessage.textContent = "Login successful"
+            loginEmailInput.classList.add("login-success");
+            loginPasswordInput.classList.add("login-success");
 
             setTimeout(() => {
                 responseContainer.classList.toggle("success-wrapper");

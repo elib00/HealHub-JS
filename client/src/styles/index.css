@@ -73,19 +73,23 @@ li a {
 
 .navbar-button-container {
   /* background-color: pink; */
+  display: flex;
+  align-items: center;
+  justify-content: right;
   margin-left: auto;
-  padding-top: 30px;
   width: 300px;
+  padding-right: 50px;
 }
 
 .buttons {
+  /* margin-right: 50px; */
   font-family: montserrat;
   font-weight: 600;
   text-transform: uppercase;
   font-size: 16px;
   border-radius: 20px;
   padding: 10px;
-  width: 100px;
+  width: 150px;
   height: fit-content;
   border: none;
   color: white;
