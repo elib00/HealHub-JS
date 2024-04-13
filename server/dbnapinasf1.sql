@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 04, 2024 at 02:47 AM
+-- Generation Time: Apr 13, 2024 at 09:03 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.0.30
 
@@ -20,6 +20,37 @@ SET time_zone = "+00:00";
 --
 -- Database: `dbnapinasf1`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `tbldoctor`
+--
+
+CREATE TABLE `tbldoctor` (
+  `doctor_id` int(11) NOT NULL,
+  `account_id` int(11) NOT NULL,
+  `specialization` varchar(100) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `tblupgraderequest`
+--
+
+CREATE TABLE `tblupgraderequest` (
+  `request_id` int(11) NOT NULL,
+  `account_id` int(11) NOT NULL,
+  `specialization` varchar(100) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `tblupgraderequest`
+--
+
+INSERT INTO `tblupgraderequest` (`request_id`, `account_id`, `specialization`) VALUES
+(4, 15, 'Pediatrics');
 
 -- --------------------------------------------------------
 
@@ -48,7 +79,9 @@ INSERT INTO `tbluseraccount` (`account_id`, `user_id`, `email`, `username`, `pas
 (11, 12, 'tedted@gmail.com', 'tedted', '$2y$10$BgT9z7/LUCbNqpm4FtnkvuXdso8yXYcWDkE7Mv56EeyIF8qc.pVHK', 0),
 (15, 17, 'test@gmail.com', 'Test', '$2y$10$aaS/Jg0morV7ejBaAJPWU.1vX7TPJ6L0fmiyKsLOTaUTQya9nVPRe', 0),
 (16, 18, 'dean@gmail.com', 'Deanz', '$2y$10$SoW6a5fp/TEAE368GVPbtOBpBxzarCqvWc3Kt49g/0xA4fi85tbgS', 0),
-(17, 19, 'ryan@gmail.com', 'Darkry', '$2y$10$8cwDZlxqSkAIrtAnyUvwp.6YExuWG0vUKvNxv/eE9w3wqVXWgZKlC', 0);
+(17, 19, 'ryan@gmail.com', 'Darkry', '$2y$10$8cwDZlxqSkAIrtAnyUvwp.6YExuWG0vUKvNxv/eE9w3wqVXWgZKlC', 0),
+(18, 20, 'abigil@gmail.com', 'gilgil', '$2y$10$fj5yjfw8fA9oT57wg62xj.CBhlWKb/MX32YA9oZOCisMOBhJymYt.', 0),
+(19, 21, 'osh@gmail.com', 'Oshh19', '$2y$10$w/vNLxRRfqDNnLeQ5WZ2A.JR1f4AWPNOe/wvDzTSF.5BH4CWT4URi', 0);
 
 -- --------------------------------------------------------
 
@@ -76,11 +109,26 @@ INSERT INTO `tbluserprofile` (`user_id`, `firstname`, `lastname`, `gender`, `bir
 (12, 'Zhazted', 'Valles', 'Male', '2024-03-17'),
 (17, 'Test', 'Test', 'Male', '2014-08-17'),
 (18, 'Dean', 'Clyde', 'Male', '2024-03-17'),
-(19, 'John', 'Ryan', 'Male', '2024-03-17');
+(19, 'John', 'Ryan', 'Male', '2024-03-17'),
+(20, 'Abegaeil', 'Navarrete', 'Female', '2024-04-13'),
+(21, 'Osh', 'Kosh', 'Male', '2024-04-13');
 
 --
 -- Indexes for dumped tables
 --
+
+--
+-- Indexes for table `tbldoctor`
+--
+ALTER TABLE `tbldoctor`
+  ADD PRIMARY KEY (`doctor_id`),
+  ADD KEY `account_id` (`account_id`);
+
+--
+-- Indexes for table `tblupgraderequest`
+--
+ALTER TABLE `tblupgraderequest`
+  ADD PRIMARY KEY (`request_id`);
 
 --
 -- Indexes for table `tbluseraccount`
@@ -100,20 +148,38 @@ ALTER TABLE `tbluserprofile`
 --
 
 --
+-- AUTO_INCREMENT for table `tbldoctor`
+--
+ALTER TABLE `tbldoctor`
+  MODIFY `doctor_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
+
+--
+-- AUTO_INCREMENT for table `tblupgraderequest`
+--
+ALTER TABLE `tblupgraderequest`
+  MODIFY `request_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
 -- AUTO_INCREMENT for table `tbluseraccount`
 --
 ALTER TABLE `tbluseraccount`
-  MODIFY `account_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+  MODIFY `account_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 
 --
 -- AUTO_INCREMENT for table `tbluserprofile`
 --
 ALTER TABLE `tbluserprofile`
-  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
+  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
 
 --
 -- Constraints for dumped tables
 --
+
+--
+-- Constraints for table `tbldoctor`
+--
+ALTER TABLE `tbldoctor`
+  ADD CONSTRAINT `tbldoctor_ibfk_1` FOREIGN KEY (`account_id`) REFERENCES `tbluseraccount` (`account_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `tbluseraccount`
