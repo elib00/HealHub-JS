@@ -50,30 +50,21 @@ if($method === "POST"){
     $row = mysqli_fetch_assoc($result);
     $accountID = $row["account_id"];
 
-    $query4 = "INSERT INTO tbldoctor (account_id, specialization) VALUES ('$accountID', 'pediatrician')";
-    
-    if(mysqli_query($connection, $query4)){
+    //check in the requests db if the account is already in there
+    $query4 = "SELECT * FROM tblupgraderequest WHERE account_id = '$accountID'";
+    $result = mysqli_query($connection, $query4);
+
+    if(mysqli_num_rows($result) != 0){
+        echo json_encode(array("success" => false, "message" => "Request already sent. Account is currently being verified."));
+        die();
+    }
+
+    //if the request has not been sent yet, insert it into the database for requests
+    $query5 = "INSERT INTO tblupgraderequest (account_id, specialization) VALUES ('$accountID', 'pediatrician')";
+
+    if(mysqli_query($connection, $query5)){
         header('Content-Type: application/json');
         http_response_code(200);
-
-        //update the user_type of the account
-        $query5 = "UPDATE tbluseraccount SET user_type = 1 WHERE account_id = '$accountID'";
-        $result = mysqli_query($connection, $query5);
-        if($result === false){
-            die("Error in query: " . mysqli_error($connection));
-        }
-
-        $response = [
-            "success" => true,
-            "created_data" => [
-                "doctor_account" => [
-                    "account_id" => $accountID,
-                    "specialization" => "pediatrician"
-                ]
-            ],
-            "message" => "User account is now a Doctor."
-        ];
-    
-        echo json_encode($response, JSON_PRETTY_PRINT);
-    }
+        echo json_encode(array("success" => true, "message" => "Request to be a doctor successfully sent. Account is now being verified."), JSON_PRETTY_PRINT);
+    } 
 }
