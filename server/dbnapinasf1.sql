@@ -28,8 +28,8 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE `tbluseraccount` (
-  `id` int(11) NOT NULL,
   `account_id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
   `email` varchar(100) NOT NULL,
   `username` varchar(100) NOT NULL,
   `password` varchar(100) NOT NULL,
@@ -40,7 +40,7 @@ CREATE TABLE `tbluseraccount` (
 -- Dumping data for table `tbluseraccount`
 --
 
-INSERT INTO `tbluseraccount` (`id`, `account_id`, `email`, `username`, `password`, `user_type`) VALUES
+INSERT INTO `tbluseraccount` (`account_id`, `user_id`, `email`, `username`, `password`, `user_type`) VALUES
 (2, 3, 'joshuanapinas@gmail.com', 'Osh19', '$2y$10$IK7rk/fwDXTbsLy8.on8b.oXTUZMMnXiQtfljFScNwQS0xMliLeK6', 0),
 (3, 4, 'aiman@gmail.com', 'aiman123', '$2y$10$6SC8HMVJySuNYhqUtYXAl.5OdWeLhk/eQNsayFsM0OGW59L/kwzEW', 0),
 (4, 5, 'fria@gmail.com', 'priyami', '$2y$10$5PYGTcn75o43OZV0Hz3q0OQD5HUOparvGFqWnVbnsyn571Hm24l5i', 0),
@@ -86,8 +86,8 @@ INSERT INTO `tbluserprofile` (`user_id`, `firstname`, `lastname`, `gender`, `bir
 -- Indexes for table `tbluseraccount`
 --
 ALTER TABLE `tbluseraccount`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `account_id` (`account_id`);
+  ADD PRIMARY KEY (`account_id`),
+  ADD KEY `user_id` (`user_id`);
 
 --
 -- Indexes for table `tbluserprofile`
@@ -103,7 +103,7 @@ ALTER TABLE `tbluserprofile`
 -- AUTO_INCREMENT for table `tbluseraccount`
 --
 ALTER TABLE `tbluseraccount`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+  MODIFY `account_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
 -- AUTO_INCREMENT for table `tbluserprofile`
@@ -119,7 +119,7 @@ ALTER TABLE `tbluserprofile`
 -- Constraints for table `tbluseraccount`
 --
 ALTER TABLE `tbluseraccount`
-  ADD CONSTRAINT `tbluseraccount_ibfk_1` FOREIGN KEY (`account_id`) REFERENCES `tbluserprofile` (`user_id`) ON DELETE CASCADE;
+  ADD CONSTRAINT `tbluseraccount_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `tbluserprofile` (`user_id`) ON DELETE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

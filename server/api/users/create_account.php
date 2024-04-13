@@ -56,7 +56,7 @@ if($method === "POST"){
         //last inserted id
         $user_id = mysqli_insert_id($connection);
  
-        $query = "INSERT INTO tbluseraccount (account_id, email, username, password, user_type) VALUES ('$user_id', '$email', '$username', '$password', '$usertype')";
+        $query = "INSERT INTO tbluseraccount (user_id, email, username, password, user_type) VALUES ('$user_id', '$email', '$username', '$password', '$usertype')";
 
         if(mysqli_query($connection, $query)) {
             $response = [
@@ -80,7 +80,7 @@ if($method === "POST"){
             echo json_encode($response, JSON_PRETTY_PRINT);
         }else{
             http_response_code(500); // Internal Server Error
-            echo json_encode(array("success" => false, "message" => "Error creating user account"). JSON_PRETTY_PRINT);
+            echo json_encode(array("success" => false, "message" => "Error creating user account"), JSON_PRETTY_PRINT);
         }
     } else {
         // If insertion fails, return an error response

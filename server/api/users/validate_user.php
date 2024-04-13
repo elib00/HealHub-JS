@@ -30,7 +30,7 @@ if($method === "POST"){
         http_response_code(200);
 
         //find the user profile (using the user account_id) associated with the email address and echo it back to the client
-        $target_id = $row["account_id"];
+        $target_id = $row["user_id"];
         $query = "SELECT * FROM tbluserprofile WHERE user_id = $target_id";
 
         $result = mysqli_query($connection, $query);
