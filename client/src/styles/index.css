@@ -22,7 +22,7 @@ p {
 
 .page-header {
   width: 100%;
-  height: 101px;
+  height: 100px;
   background-color: blueviolet;
   display: flex;
 }

@@ -41,6 +41,7 @@ if($method === "POST"){
                 "user" => [
                     "user_id" => $user["user_id"],
                     "account_id" => $userAccount["account_id"],
+                    "user_type" => $userAccount["user_type"],
                     "firstname" => $user["firstname"],
                     "lastname" => $user["lastname"],
                     "gender" => $user["gender"],

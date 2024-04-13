@@ -8,7 +8,7 @@ export const setCookie = (name, value, days) => {
     const stringValue = btoa(JSON.stringify(value));
   
     document.cookie = name + "=" + encodeURIComponent(stringValue) + ";" + expires + ";path=/";
-  }
+}
   
   // Function to get the value of a cookie and parse it as an object
 export const getCookie = (name) => {

@@ -32,10 +32,12 @@ document.addEventListener("DOMContentLoaded", () => {
         const result = await validateUser({...pendingUser});
         if(result.success){
             console.log(result.success);
-            console.log("hi");
+
             if(checkbox.checked){
-                setCookie("currentUser", result.user, 1);
+                setCookie("rememberedUser", result.user, 1);
             }
+
+            setCookie("currentUser", result.user, 1);
 
             responseContainer.classList.toggle("success-wrapper");
             responseMessage.textContent = "Login successful"

@@ -42,3 +42,23 @@ p {
 #logout {
   background-color: rgb(218, 28, 28);
 }
+
+#content-container {
+  width: 100%;
+  height: calc(100% - 100px);
+}
+
+.left-pane {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 40%;
+  height: 100%;
+  background-color: blanchedalmond;
+}
+
+.btn-request {
+  width: 100px;
+  height: 3rem;
+}
