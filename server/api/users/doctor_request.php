@@ -10,6 +10,7 @@ if($method === "POST"){
     $firstname = mysqli_real_escape_string($connection, $userData["firstname"]);
     $lastname = mysqli_real_escape_string($connection, $userData["lastname"]);
     $userID = mysqli_real_escape_string($connection, $userData["user_id"]);
+    $accountID = mysqli_real_escape_string($connection, $userData["account_id"]);
     $specialization = mysqli_real_escape_string($connection, $userData["specialization"]);
 
      //get the user information from user profile table based from the ids of the rows with user_type="1"/doctor
@@ -40,16 +41,6 @@ if($method === "POST"){
             die();
         }
     }
-
-    $query3 = "SELECT * FROM tbluseraccount WHERE user_id = '$userID'";
-    $result = mysqli_query($connection, $query3);
-
-    if($result === false){
-        die("Error in query: " . mysqli_error($connection));
-    }
-
-    $row = mysqli_fetch_assoc($result);
-    $accountID = $row["account_id"];
 
     //check in the requests db if the account is already in there
     $query4 = "SELECT * FROM tblupgraderequest WHERE account_id = '$accountID'";

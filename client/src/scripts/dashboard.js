@@ -18,5 +18,6 @@ document.addEventListener("DOMContentLoaded", () => {
         deleteCookie("currentUser");
     });
 
+    console.log(getCookie("currentUser"));
 
 });

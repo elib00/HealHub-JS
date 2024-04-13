@@ -21,29 +21,30 @@ if($method === "POST"){
     }
  
     //get the row for the user account
-    $row = mysqli_fetch_assoc($result);
+    $userAccount = mysqli_fetch_assoc($result);
     // echo json_encode($row);
  
-    $dbPassword = $row["password"];
+    $dbPassword = $userAccount["password"];
     if(password_verify($inputPassword, $dbPassword)){
         header('Content-Type: application/json');
         http_response_code(200);
 
         //find the user profile (using the user account_id) associated with the email address and echo it back to the client
-        $target_id = $row["user_id"];
+        $target_id = $userAccount["user_id"];
         $query = "SELECT * FROM tbluserprofile WHERE user_id = $target_id";
 
         $result = mysqli_query($connection, $query);
         if($result){
-            $row = mysqli_fetch_assoc($result);
+            $user = mysqli_fetch_assoc($result);
             $response = [
                 "success" => true,
                 "user" => [
-                    "user_id" => $row["user_id"],
-                    "firstname" => $row["firstname"],
-                    "lastname" => $row["lastname"],
-                    "gender" => $row["gender"],
-                    "birthdate" => $row["birthdate"]
+                    "user_id" => $user["user_id"],
+                    "account_id" => $userAccount["account_id"],
+                    "firstname" => $user["firstname"],
+                    "lastname" => $user["lastname"],
+                    "gender" => $user["gender"],
+                    "birthdate" => $user["birthdate"]
                 ],
                 "message" => "User found in the database. Validation successful.",
             ];
