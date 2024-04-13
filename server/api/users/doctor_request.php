@@ -10,6 +10,7 @@ if($method === "POST"){
     $firstname = mysqli_real_escape_string($connection, $userData["firstname"]);
     $lastname = mysqli_real_escape_string($connection, $userData["lastname"]);
     $userID = mysqli_real_escape_string($connection, $userData["user_id"]);
+    $specialization = mysqli_real_escape_string($connection, $userData["specialization"]);
 
      //get the user information from user profile table based from the ids of the rows with user_type="1"/doctor
     $query1 = "SELECT * FROM tbluseraccount WHERE user_type = 1";
@@ -60,7 +61,7 @@ if($method === "POST"){
     }
 
     //if the request has not been sent yet, insert it into the database for requests
-    $query5 = "INSERT INTO tblupgraderequest (account_id, specialization) VALUES ('$accountID', 'pediatrician')";
+    $query5 = "INSERT INTO tblupgraderequest (account_id, specialization) VALUES ('$accountID', '$specialization')";
 
     if(mysqli_query($connection, $query5)){
         header('Content-Type: application/json');

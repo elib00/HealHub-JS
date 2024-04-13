@@ -8,8 +8,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
     doctorRequestBtn.addEventListener("click", async () => {
         const userData = getCookie("currentUser");
+        const doctorSpecialization = document.getElementById("doctor-specialization").value;
         console.log(userData);
-        const result = await requestToBeDoctor({...userData});
+        const result = await requestToBeDoctor({specialization: doctorSpecialization, ...userData});
         console.log(result);
     });
 
