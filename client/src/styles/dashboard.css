@@ -44,8 +44,13 @@ p {
 }
 
 #content-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   width: 100%;
   height: calc(100% - 100px);
+  overflow-y: auto;
+  /* border: solid black 1px; */
 }
 
 .left-pane {
@@ -58,7 +63,17 @@ p {
   background-color: blanchedalmond;
 }
 
+.right-pane {
+  flex: 1;
+  height: 100%;
+}
+
 .btn-request {
   width: 100px;
   height: 3rem;
+}
+
+.table td,
+.table th {
+  text-align: center; /* Center align the contents of table cells */
 }

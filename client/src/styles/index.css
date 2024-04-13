@@ -5,6 +5,11 @@
   padding: 0;
 }
 
+/* override bootstrap na shitty auto color on hover  */
+a:hover {
+  color: white;
+}
+
 body {
   background-color: rgb(252, 252, 252);
   height: 100vh;
