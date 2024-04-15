@@ -33,8 +33,6 @@
       </a>
     </div>
   </div>
-
-  <h1 style="margin-top: 20px; margin-left: 20px">Welcome, Admin!</h1>
   <div id="content-container">
     <!-- <table class="table" style="width: 80%; height: wrap-content; border: solid black 1px">
       <thead class="table-dark">
@@ -71,7 +69,7 @@
     </table> -->
   </div>
 
-  <!-- Modal -->
+  <!-- Input modal -->
   <div class="modal fade" id="doctor-request-modal" tabindex="-1" role="dialog"
     aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
@@ -92,6 +90,27 @@
         </div>
         <div class="modal-footer">
           <button id="doctor-request-button" type="button" class="btn btn-primary">Send Request</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- message modal -->
+  <div class="modal fade" id="request-outcome-modal" tabindex="-1" role="dialog"
+    aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 id="request-outcome-title" class="modal-title"></h5>
+          <button type="button" class="btn btn-danger" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <p id="request-outcome-message" style="display: inline-block; margin: 0; color: black"></p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline-danger" data-dismiss="modal">Close</button>
         </div>
       </div>
     </div>

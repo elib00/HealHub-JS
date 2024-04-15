@@ -1,4 +1,4 @@
-import { requestToBeDoctor, getDoctorUpgradeRequests } from "./essentials.js";
+import { requestToBeDoctor, getDoctorUpgradeRequests, approveRequest, rejectRequest } from "./essentials.js";
 import { getCookie } from "./cookieHandler.js";
 import { deleteCookie } from "./cookieHandler.js";
 
@@ -55,8 +55,6 @@ document.addEventListener("DOMContentLoaded", () => {
         const tableContainer = document.createElement("table");
         tableContainer.className = "table";
         tableContainer.style = "width: 80%; height: wrap-content; border: solid black 1px";
-        // tableContainer.style.margin = "auto"
-        // tableContainer.style.width = "100%";
 
         const tableHeader = document.createElement("thead");
         tableHeader.className = "table-dark";
@@ -82,24 +80,30 @@ document.addEventListener("DOMContentLoaded", () => {
 
         for(let i = 0; i < requests.length; i++) {
             tableBodyHTML += `<tr>`;
-            tableBodyHTML += `<th scope="row">${requests[i].request_id}</th>`;
-            tableBodyHTML += `<td>${requests[i].account_id}</td>`;
-            tableBodyHTML += `<td>${requests[i].specialization}</td>`;
+            tableBodyHTML += `<th data-request-id scope="row">${requests[i].request_id}</th>`;
+            tableBodyHTML += `<td data-account-id> ${requests[i].account_id}</td>`;
+            tableBodyHTML += `<td data-specialization> ${requests[i].specialization}</td>`;
             tableBodyHTML += `
                 <td>
-                    <button class="btn btn-success">Accept</button>
-                    <button class="btn btn-danger">Reject</button>
+                    <button data-accept class="btn btn-success">Accept</button>
+                    <button data-reject class="btn btn-danger">Reject</button>
                 </td>
             `;
+
+            tableBodyHTML += `</tr>`;
+
         }
 
         tableBody.innerHTML = tableBodyHTML;
-    
-
         tableContainer.appendChild(tableHeader);
         tableContainer.appendChild(tableBody);
-
         contentContainer.appendChild(tableContainer);   
+
+        //add the event listeners for the accept buttons
+        const acceptButtons = document.querySelectorAll("[data-accept]");
+        const rejectButtons = document.querySelectorAll("[data-reject]");
+        processDoctorRequest(acceptButtons, "accept");
+        processDoctorRequest(rejectButtons, "reject");
     };
 
 
@@ -122,4 +126,41 @@ document.addEventListener("DOMContentLoaded", () => {
         handleAdminDashboard();
     }
 });
+
+const processDoctorRequest = (buttonArray, type) => {
+    const requestOutcomeTitle = document.getElementById("request-outcome-title");
+    const requestOutcomeMessage = document.getElementById("request-outcome-message");
+
+    buttonArray.forEach(button => {
+        button.addEventListener("click", async (event) => {
+            const targetElement = event.target.closest("tr").querySelector("[data-request-id]");
+            const requestID = targetElement.textContent;
+            const accountID = targetElement.nextElementSibling.textContent;
+            const specialization = targetElement.nextElementSibling.nextElementSibling.textContent;
+            let result = null;
+
+            const data = {
+                request_id: requestID,
+                account_id: accountID,
+                specialization: specialization
+            };
+    
+            if(type === "accept"){
+                result = await approveRequest(data);
+                requestOutcomeMessage.textContent = "User is now a Doctor.";
+                requestOutcomeTitle.textContent = "ACCEPTED";
+                requestOutcomeTitle.style.color = "green";
+            }else{
+                result = await rejectRequest(data);
+                requestOutcomeMessage.textContent = "Request to be a Doctor has been rejected.";
+                requestOutcomeTitle.textContent = "REJECTED";
+                requestOutcomeTitle.style.color = "red";
+            }
+
+            $("#request-outcome-modal").modal("show");
+            console.log(result);
+            targetElement.parentNode.remove();
+        }); 
+    });
+}
 
