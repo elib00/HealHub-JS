@@ -1,12 +1,11 @@
-import { requestToBeDoctor, getDoctorUpgradeRequests, approveRequest, rejectRequest } from "./essentials.js";
+import { requestToBeDoctor, getDoctorUpgradeRequests, approveRequest, rejectRequest, setSchedule } from "./essentials.js";
 import { getCookie } from "./cookieHandler.js";
 import { deleteCookie } from "./cookieHandler.js";
 
-document.addEventListener("DOMContentLoaded", () => {
-    const handleUserDashboard = () => {
-        const userData = getCookie("currentUser");
-        generateUserPage();
+document.addEventListener("DOMContentLoaded", async () => {
 
+    const handleUserDashboard = (userData) => {
+        generateUserPage();
         const doctorRequestBtn = document.getElementById("doctor-request-button");
     
         doctorRequestBtn.addEventListener("click", async () => {
@@ -17,11 +16,27 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     };
     
-    const handleDoctorDashboard = () => {
-        const userData = getCookie("currentUser");
+    const handleDoctorDashboard = (userData) => {
+        generateDoctorPage(userData);
+        const setScheduleBtn = document.getElementById("set-schedule-button");
+
+        setScheduleBtn.addEventListener("click", async (event) => {
+            event.preventDefault();
+            const schedule = document.getElementById("schedule-date").value;
+            console.log(schedule);
+
+            const data = {
+                account_id: userData.account_id,
+                date: schedule,
+            }
+
+            console.log(data);
+            const result = await setSchedule(data);
+            console.log(result);
+        });
     };
     
-    const handleAdminDashboard = async () => {
+    const handleAdminDashboard = async (userData) => {
         await generateAdminPage();
     }
     
@@ -41,6 +56,8 @@ document.addEventListener("DOMContentLoaded", () => {
                 //create the left pane
         const rightPane = document.createElement("div");
         rightPane.className = "right-pane";
+
+        
 
         leftPane.innerHTML = leftPaneHTML;
         //add everything to the parent container
@@ -106,30 +123,78 @@ document.addEventListener("DOMContentLoaded", () => {
         processDoctorRequest(rejectButtons, "reject");
     };
 
+    const generateDoctorPage = () => {
+        const contentContainer = document.getElementById("content-container");
+        const leftPane = document.createElement("div");
+        leftPane.className = "left-pane";
 
-    
+        let leftPaneHTML = `
+            <form id="set-schedule-form" class="mb-3">
+                <div class="mb-3">
+                    <input type="date" id="schedule-date">
+                </div>
+                <div class="mb-3">
+                    <button type="submit" id="set-schedule-button" class="btn btn-success">Submit</button>
+                </div>
+            </form>
+        `;
+
+        const rightPane = document.createElement("div");
+        rightPane.className = "right-pane";
+
+        leftPane.innerHTML = leftPaneHTML;
+        contentContainer.appendChild(leftPane);
+        contentContainer.appendChild(rightPane);
+    }
+
+
+    // ------------------ main logic ----------------------//
 
     const logoutBtn = document.getElementById("logout");    
     logoutBtn.addEventListener("click", () => {
         deleteCookie("currentUser");
     });
 
-    const userData = getCookie("currentUser"); //variable that dictates the view of the dashboard
-    const userType = parseInt(userData.user_type);
-    console.log(userType);
 
-    if(userType === 0){
-        handleUserDashboard();
-    }else if(userType === 1){
-        handleDoctorDashboard();
-    }else if(userType === 2){
-        handleAdminDashboard();
+    //handling the case when the user has not logged in yet
+    const statusTitle = document.getElementById("status-title");
+    const statusMessage = document.getElementById("status-message");
+
+    let userData; //variable that dictates the view of the dashboard
+    userData = getCookie("currentUser");
+    if(!userData) userData = getCookie("rememberedUser");
+    if(!userData){
+        statusTitle.textContent = "PAGE ACCESS NOT ALLOWED"
+        statusTitle.style.color = "red";
+        statusMessage.textContent = "Please log in a valid account first.";
+        $("#status-modal").modal("show");
+
+        setTimeout(() => {
+            window.location.replace("index.html");
+        }, 2000);
+    }
+
+    const userType = parseInt(userData.user_type);
+
+    switch(userType){
+        case 0:
+            console.log("user");
+            handleUserDashboard({...userData});
+            break;
+        case 1:
+            console.log("doctor");
+            handleDoctorDashboard({...userData});
+            break;
+        case 2:
+            console.log("admin");
+            await handleAdminDashboard({...userData});
+            break;
     }
 });
 
 const processDoctorRequest = (buttonArray, type) => {
-    const requestOutcomeTitle = document.getElementById("request-outcome-title");
-    const requestOutcomeMessage = document.getElementById("request-outcome-message");
+    const statusTitle = document.getElementById("status-title");
+    const statusMessage = document.getElementById("status-message");
 
     buttonArray.forEach(button => {
         button.addEventListener("click", async (event) => {
@@ -147,20 +212,19 @@ const processDoctorRequest = (buttonArray, type) => {
     
             if(type === "accept"){
                 result = await approveRequest(data);
-                requestOutcomeMessage.textContent = "User is now a Doctor.";
-                requestOutcomeTitle.textContent = "ACCEPTED";
-                requestOutcomeTitle.style.color = "green";
+                statusMessage.textContent = "User is now a Doctor.";
+                statusTitle.textContent = "ACCEPTED";
+                statusMessage.style.color = "green";
             }else{
                 result = await rejectRequest(data);
-                requestOutcomeMessage.textContent = "Request to be a Doctor has been rejected.";
-                requestOutcomeTitle.textContent = "REJECTED";
-                requestOutcomeTitle.style.color = "red";
+                statusMessage.textContent = "Request to be a Doctor has been rejected.";
+                statusTitle.textContent = "REJECTED";
+                statusMessage.style.color = "red";
             }
 
-            $("#request-outcome-modal").modal("show");
+            $("#status-modal").modal("show");
             console.log(result);
             targetElement.parentNode.remove();
         }); 
     });
 }
-

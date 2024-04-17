@@ -19,24 +19,32 @@ if($method === "POST"){
 
     $query2 = "DELETE FROM tblupgraderequest WHERE request_id = '$requestID'";
     $result = mysqli_query($connection, $query2);
-
+ 
     if($result === false){
         die("Error in query: " . mysqli_error($connection));
     }
 
-    header('Content-Type: application/json');
-    http_response_code(200);
 
-    $response = [
-        "success" => true,
-        "created_data" => [
-            "doctor_account" => [
-                "account_id" => $accountID,
-                "specialization" => "pediatrician"
-            ]
-        ],
-        "message" => "User account is now a Doctor."
-    ];
+    $query3 = "INSERT INTO tbldoctor(account_id, specialization) VALUES ('$accountID', '$specialization')";
+    
+    if(mysqli_query($connection, $query3)){
+        header('Content-Type: application/json');
+        http_response_code(200);
+    
+        $response = [
+            "success" => true,
+            "created_data" => [
+                "doctor_account" => [
+                    "account_id" => $accountID,
+                    "specialization" => $specialization
+                ]
+            ],
+            "message" => "User account is now a Doctor."
+        ];
+    
+        echo json_encode($response, JSON_PRETTY_PRINT);
+    }else{
+        die("Error in query: " . mysqli_error($connection));
+    }
 
-    echo json_encode($response, JSON_PRETTY_PRINT);
 }
