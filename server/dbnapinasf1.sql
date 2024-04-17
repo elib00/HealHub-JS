@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 13, 2024 at 09:03 AM
+-- Generation Time: Apr 18, 2024 at 01:43 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.0.30
 
@@ -24,6 +24,19 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `tblappointment`
+--
+
+CREATE TABLE `tblappointment` (
+  `appointment_id` int(11) NOT NULL,
+  `patient_id` int(11) NOT NULL,
+  `doctor_id` int(11) NOT NULL,
+  `appointment_date` date NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `tbldoctor`
 --
 
@@ -32,6 +45,33 @@ CREATE TABLE `tbldoctor` (
   `account_id` int(11) NOT NULL,
   `specialization` varchar(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `tbldoctor`
+--
+
+INSERT INTO `tbldoctor` (`doctor_id`, `account_id`, `specialization`) VALUES
+(25, 2, ' Pediatrics');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `tblschedule`
+--
+
+CREATE TABLE `tblschedule` (
+  `schedule_id` int(11) NOT NULL,
+  `doctor_id` int(11) NOT NULL,
+  `date` date NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `tblschedule`
+--
+
+INSERT INTO `tblschedule` (`schedule_id`, `doctor_id`, `date`) VALUES
+(4, 25, '2024-04-18'),
+(5, 25, '2024-04-17');
 
 -- --------------------------------------------------------
 
@@ -50,7 +90,7 @@ CREATE TABLE `tblupgraderequest` (
 --
 
 INSERT INTO `tblupgraderequest` (`request_id`, `account_id`, `specialization`) VALUES
-(4, 15, 'Pediatrics');
+(13, 21, 'Pediatrics');
 
 -- --------------------------------------------------------
 
@@ -72,7 +112,7 @@ CREATE TABLE `tbluseraccount` (
 --
 
 INSERT INTO `tbluseraccount` (`account_id`, `user_id`, `email`, `username`, `password`, `user_type`) VALUES
-(2, 3, 'joshuanapinas@gmail.com', 'Osh19', '$2y$10$IK7rk/fwDXTbsLy8.on8b.oXTUZMMnXiQtfljFScNwQS0xMliLeK6', 0),
+(2, 3, 'joshuanapinas@gmail.com', 'Osh19', '$2y$10$IK7rk/fwDXTbsLy8.on8b.oXTUZMMnXiQtfljFScNwQS0xMliLeK6', 1),
 (3, 4, 'aiman@gmail.com', 'aiman123', '$2y$10$6SC8HMVJySuNYhqUtYXAl.5OdWeLhk/eQNsayFsM0OGW59L/kwzEW', 0),
 (4, 5, 'fria@gmail.com', 'priyami', '$2y$10$5PYGTcn75o43OZV0Hz3q0OQD5HUOparvGFqWnVbnsyn571Hm24l5i', 0),
 (5, 6, 'theanapinas@gmail.com', 'Yangyang', '$2y$10$9JYmPnnD1K/YfJ/ti6RBWeHaM5WWCKXPiFojDS6XJRnEBjvSfyhzy', 0),
@@ -81,7 +121,9 @@ INSERT INTO `tbluseraccount` (`account_id`, `user_id`, `email`, `username`, `pas
 (16, 18, 'dean@gmail.com', 'Deanz', '$2y$10$SoW6a5fp/TEAE368GVPbtOBpBxzarCqvWc3Kt49g/0xA4fi85tbgS', 0),
 (17, 19, 'ryan@gmail.com', 'Darkry', '$2y$10$8cwDZlxqSkAIrtAnyUvwp.6YExuWG0vUKvNxv/eE9w3wqVXWgZKlC', 0),
 (18, 20, 'abigil@gmail.com', 'gilgil', '$2y$10$fj5yjfw8fA9oT57wg62xj.CBhlWKb/MX32YA9oZOCisMOBhJymYt.', 0),
-(19, 21, 'osh@gmail.com', 'Oshh19', '$2y$10$w/vNLxRRfqDNnLeQ5WZ2A.JR1f4AWPNOe/wvDzTSF.5BH4CWT4URi', 0);
+(19, 21, 'osh@gmail.com', 'Oshh19', '$2y$10$w/vNLxRRfqDNnLeQ5WZ2A.JR1f4AWPNOe/wvDzTSF.5BH4CWT4URi', 0),
+(20, 22, 'admin@gmail.com', 'admin', '$2y$10$uOwDEZdq0B9OA0xELVEQoe/mz5ZRNy4mNfwtEhkFj80L6I7JQH2ja', 2),
+(21, 23, 'test3@gmail.com', 'test3', '$2y$10$Ytbr2ZuV/7j2itVj2KNO2eKqjOTNh2895rAUp8Q7F3j5WKstYCTQW', 0);
 
 -- --------------------------------------------------------
 
@@ -111,11 +153,19 @@ INSERT INTO `tbluserprofile` (`user_id`, `firstname`, `lastname`, `gender`, `bir
 (18, 'Dean', 'Clyde', 'Male', '2024-03-17'),
 (19, 'John', 'Ryan', 'Male', '2024-03-17'),
 (20, 'Abegaeil', 'Navarrete', 'Female', '2024-04-13'),
-(21, 'Osh', 'Kosh', 'Male', '2024-04-13');
+(21, 'Osh', 'Kosh', 'Male', '2024-04-13'),
+(22, 'admin', 'admin', 'Male', '2003-10-19'),
+(23, 'Test', 'Test', 'Male', '2024-04-13');
 
 --
 -- Indexes for dumped tables
 --
+
+--
+-- Indexes for table `tblappointment`
+--
+ALTER TABLE `tblappointment`
+  ADD PRIMARY KEY (`appointment_id`);
 
 --
 -- Indexes for table `tbldoctor`
@@ -123,6 +173,12 @@ INSERT INTO `tbluserprofile` (`user_id`, `firstname`, `lastname`, `gender`, `bir
 ALTER TABLE `tbldoctor`
   ADD PRIMARY KEY (`doctor_id`),
   ADD KEY `account_id` (`account_id`);
+
+--
+-- Indexes for table `tblschedule`
+--
+ALTER TABLE `tblschedule`
+  ADD PRIMARY KEY (`schedule_id`);
 
 --
 -- Indexes for table `tblupgraderequest`
@@ -148,28 +204,40 @@ ALTER TABLE `tbluserprofile`
 --
 
 --
+-- AUTO_INCREMENT for table `tblappointment`
+--
+ALTER TABLE `tblappointment`
+  MODIFY `appointment_id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT for table `tbldoctor`
 --
 ALTER TABLE `tbldoctor`
-  MODIFY `doctor_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
+  MODIFY `doctor_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
+
+--
+-- AUTO_INCREMENT for table `tblschedule`
+--
+ALTER TABLE `tblschedule`
+  MODIFY `schedule_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `tblupgraderequest`
 --
 ALTER TABLE `tblupgraderequest`
-  MODIFY `request_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `request_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT for table `tbluseraccount`
 --
 ALTER TABLE `tbluseraccount`
-  MODIFY `account_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
+  MODIFY `account_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
 
 --
 -- AUTO_INCREMENT for table `tbluserprofile`
 --
 ALTER TABLE `tbluserprofile`
-  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
+  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
 
 --
 -- Constraints for dumped tables
