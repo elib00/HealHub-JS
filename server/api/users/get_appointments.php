@@ -56,7 +56,7 @@ if($method === "GET"){
                 "doctor_id" => $doctorID,
                 "doctor_name" => $doctorName,
                 "doctor_email" => $doctorEmail,
-                "doctor_gener" => $doctorGender
+                "doctor_gender" => $doctorGender
             ],
             "doctor_schedule" => $doctorSchedules
         ];

@@ -84,10 +84,11 @@ p {
   flex-direction: column;
   justify-content: space-evenly;
   height: 150px;
-  width: 50%;
+  width: 80%;
   border: solid black 1px;
   border-radius: 10px;
   padding: 10px;
+  margin-top: 20px;
   position: relative;
 }
 
@@ -97,4 +98,14 @@ p {
   right: 10px;
   height: 2rem;
   width: 2rem;
+}
+
+.card-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  /* justify-content: center; */
+  height: 100%;
+  width: 100%;
+  overflow-y: auto;
 }

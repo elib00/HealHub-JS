@@ -1,10 +1,19 @@
-import { requestToBeDoctor, getDoctorUpgradeRequests, approveRequest, rejectRequest, setSchedule, getSchedules, cancelSchedule, editSchedule, getDoctorAppointments } from "./essentials.js";
+import { requestToBeDoctor, 
+        getDoctorUpgradeRequests, 
+        approveRequest, rejectRequest, 
+        setSchedule, 
+        getSchedules, 
+        cancelSchedule, 
+        editSchedule, 
+        getDoctorAppointments } 
+from "./essentials.js";
+
 import { getCookie } from "./cookieHandler.js";
 import { deleteCookie } from "./cookieHandler.js";
 
 document.addEventListener("DOMContentLoaded", async () => {
-    const handleUserDashboard = (userData) => {
-        generateUserPage();
+    const handleUserDashboard = async (userData) => {
+        await generateUserPage();
         const doctorRequestBtn = document.getElementById("doctor-request-button");
     
         doctorRequestBtn.addEventListener("click", async () => {
@@ -51,7 +60,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         await generateAdminPage();
     }
     
-    const generateUserPage = () => {
+    const generateUserPage = async () => {
         const contentContainer = document.getElementById("content-container");
     
         //create the left pane
@@ -67,11 +76,32 @@ document.addEventListener("DOMContentLoaded", async () => {
                 //create the left pane
         const rightPane = document.createElement("div");
         rightPane.className = "right-pane";
+        const cardContainer = document.createElement("div");
+        cardContainer.className = "card-container";
     
-        let rightPaneHTML = ``;
-        
+        let cardContainerHTML = ``;
+
+        const appointments = await getDoctorAppointments();
+        const doctors = appointments.doctors;
+
+        for(let i = 0; i < doctors.length; i++) {
+            const doctorDetails = doctors[i].doctor_details;
+            const doctorSchedule = doctors[i].doctor_schedule;
+
+            cardContainerHTML += `<div class="content-card">`;
+            cardContainerHTML += `<h2>Doctor    ${doctorDetails.doctor_name}</h2>`;
+            cardContainerHTML += `<p style="text-align: start">${doctorDetails.doctor_email}</p>`;
+            cardContainerHTML += `<p style="text-align: start">${doctorDetails.doctor_gender}</p>`;
+            cardContainerHTML += `<button class="btn btn-danger delete-card"></button>`;
+            cardContainerHTML += '<button class="btn btn-success">Book Appointment</button>';
+            cardContainerHTML += `</div>`;
+        }
+
+        cardContainer.innerHTML = cardContainerHTML;
+        rightPane.appendChild(cardContainer);
 
         leftPane.innerHTML = leftPaneHTML;
+
         //add everything to the parent container
         contentContainer.appendChild(leftPane);
         contentContainer.appendChild(rightPane);
@@ -241,9 +271,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
 
     const userType = parseInt(userData.user_type);
-    const res = await getDoctorAppointments();
-    console.log(res);
-
+    
     switch(userType){
         case 0:
             console.log("user");
