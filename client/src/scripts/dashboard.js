@@ -1,9 +1,8 @@
-import { requestToBeDoctor, getDoctorUpgradeRequests, approveRequest, rejectRequest, setSchedule, getSchedules, cancelSchedule, editSchedule } from "./essentials.js";
+import { requestToBeDoctor, getDoctorUpgradeRequests, approveRequest, rejectRequest, setSchedule, getSchedules, cancelSchedule, editSchedule, getDoctorAppointments } from "./essentials.js";
 import { getCookie } from "./cookieHandler.js";
 import { deleteCookie } from "./cookieHandler.js";
 
 document.addEventListener("DOMContentLoaded", async () => {
-
     const handleUserDashboard = (userData) => {
         generateUserPage();
         const doctorRequestBtn = document.getElementById("doctor-request-button");
@@ -242,6 +241,8 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
 
     const userType = parseInt(userData.user_type);
+    const res = await getDoctorAppointments();
+    console.log(res);
 
     switch(userType){
         case 0:
