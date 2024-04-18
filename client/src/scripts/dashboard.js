@@ -20,6 +20,9 @@ document.addEventListener("DOMContentLoaded", async () => {
         await generateDoctorPage(userData);
         const setScheduleBtn = document.getElementById("set-schedule-button");
 
+        const statusTitle = document.getElementById("status-title");
+        const statusMessage = document.getElementById("status-message");    
+
         setScheduleBtn.addEventListener("click", async (event) => {
             event.preventDefault();
             const schedule = document.getElementById("schedule-date").value;
@@ -33,6 +36,15 @@ document.addEventListener("DOMContentLoaded", async () => {
             console.log(data);
             const result = await setSchedule(data);
             console.log(result);
+
+            statusMessage.textContent = "Schedule created successfully.";
+            statusTitle.textContent = "SCHEDULE CREATED";
+            statusMessage.style.color = "green";
+            $("#status-modal").modal("show");
+            
+            setTimeout(() => {
+                window.location.replace("dashboard.html");
+            }, 2000);
         });
     };
     
@@ -309,7 +321,7 @@ const processScheduleUpdate = (buttonArray, type) => {
             }else{
                 result = await cancelSchedule(data);
                 statusMessage.textContent = "Schedule has been cancelled successfully.";
-                statusTitle.textContent = "CANCEL SCHEDU:E";
+                statusTitle.textContent = "CANCEL SCHEDULE";
                 statusMessage.style.color = "red";
                 targetElement.parentNode.remove();
             }
