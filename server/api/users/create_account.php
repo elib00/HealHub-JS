@@ -91,6 +91,6 @@ if($method === "POST"){
     // Close the database connection
     // mysqli_close($connection);
 }else{
-    echo "Type of method not supported or allowed in this endpoint.";
+    echo json_encode(array("success" => false, "message" => "Type of method not supported or allowed in this endpoint."), JSON_PRETTY_PRINT);
 }
  
