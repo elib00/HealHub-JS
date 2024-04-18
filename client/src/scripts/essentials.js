@@ -22,6 +22,18 @@ export const getDoctorUpgradeRequests = async () => {
     }
 }
 
+export const getSchedules = async (userData) => {
+    try{
+        const response = await axios.post("http://localhost:3000/server/api/users/get_schedules.php", userData);
+        console.log(response.data);
+        return response.data;
+    }catch(err){
+        console.log(err.message);
+        console.log(err.response.data);
+        return err.response.data;
+    }
+}
+
 export const approveRequest = async (userData) => {
     try{
         const response = await axios.post("http://localhost:3000/server/api/admin/approve_request.php", userData);
@@ -49,6 +61,30 @@ export const rejectRequest = async (userData) => {
 export const setSchedule = async (userData) => {
     try{
         const response = await axios.post("http://localhost:3000/server/api/users/set_schedule.php", userData);
+        console.log(response.data);
+        return response.data;
+    }catch(err){
+        console.log(err.message);
+        console.log(err.response.data);
+        return err.response.data;
+    }
+};
+
+export const editSchedule = async (userData) => {
+    try{
+        const response = await axios.post("http://localhost:3000/server/api/users/edit_schedule.php", userData);
+        console.log(response.data);
+        return response.data;
+    }catch(err){
+        console.log(err.message);
+        console.log(err.response.data);
+        return err.response.data;
+    }
+};
+
+export const cancelSchedule = async (userData) => {
+    try{
+        const response = await axios.post("http://localhost:3000/server/api/users/cancel_schedule.php", userData);
         console.log(response.data);
         return response.data;
     }catch(err){
