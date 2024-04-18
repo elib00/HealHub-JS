@@ -153,6 +153,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     const logoutBtn = document.getElementById("logout");    
     logoutBtn.addEventListener("click", () => {
         deleteCookie("currentUser");
+        deleteCookie("rememberedUser");
     });
 
 
