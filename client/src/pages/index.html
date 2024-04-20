@@ -6,74 +6,96 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
     integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
   <link rel="stylesheet" href="../styles/index.css">
   <title>HealHub</title>
 </head>
 
 <body>
 
-  <div class="page-header">
-    <div class="page-logo">
-      HealHub
-    </div>
-
-    <div class="page-navbar">
-      <ul>
-        <li><a href="index.html">Home</a></li>
-        <li><a href="about-us.html">About Us</a></li>
-        <li><a href="contact-us.html">Contact Us</a></li>
+  <nav class="navbar navbar-expand-lg navbar-light" style="background-color: #8a2be2; height:101px">
+    <a class="navbar-brand" href="#" style="color: white;   font-size: 35px;   font-weight: 600;   padding-left: 70px;   font-family: montserrat;
+  ">HealHub</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse " id="navbarNavDropdown">
+      <ul class="navbar-nav">
+        <li class="nav-item active">
+          <a class="nav-link" href="index.html" style="color: white;">Home <span class="sr-only">(current)</span></a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="about-us.html" style="color: white;">About Us</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="contact-us.html" style="color: white;">Contact Us</a>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="color: white;">
+            Patient
+          </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+            <a class="dropdown-item" href="dashboard.html" style="color: #8a2be2; font-weight: 500">Dashboard</a>
+            <a class="dropdown-item" href="appointment.php" style="color: #8a2be2; font-weight: 500">Set Appointment</a>
+            <!-- <a class="dropdown-item" href="#" style="color: black;">Something else here</a> -->
+          </div>
+        </li>
+      </ul>
+  
+     
+      <ul class="navbar-nav">
+        <li>
+          <a href="login.html" style="color: white;">
+            <button class="buttons" id="btn-login">Login</button>
+          </a>
+        </li>
+  
+        <li>
+          <a href="register.html" style="color: white;">
+            <button class="buttons" id="btn-register">Register</button>
+          </a>
+        </li>
       </ul>
     </div>
-
-    <div class="navbar-button-container">
-      <a href="login.html" class="buttons" id="btn-login"
-        style="text-decoration: none; display: inline-block; text-align: center">Login</a>
-      <a href="register.html" class="buttons" id="btn-register"
-        style="text-decoration: none; display: inline-block; text-align: center">Register</a>
-    </div>
-  </div>
-
+   
+  </nav>
+  
   <div class="page-contents-container">
     <div class="header-container">
       <div class="header-text">
-        <p> Consult a doctor <br> anytime, anywhere <br> by <span class="text-underline"> video call</span> </p>
-        <p class="header-lowtext"> Talk with a doctor now!</p>
-      </div>
-
-      <div class="header-buttons">
+        <div class="header-text-content">
+        <p style="width: auto; text-align: left;">Get <span class="text-highlight" style="width: auto;">immediate medical advice</span> anytime, with <br> our <span class="text-underline">appointment</span> service!</p>
+       <div>
+        <p class="header-lowtext" style="text-align: left;">Talk with a doctor now!</p>
+        <div class="header-buttons">
         <button class="book-an-appointment">Book an Appointment</button>
         <button class="chat-a-doctor">Chat a Doctor</button>
       </div>
-
-
-    </div>
-
-    <div class="trust-us-container">
-      <div class="trust-us-text">
-        Why you should trust us? <br> Get to know about us
+       </div>
+        
+        </div>
       </div>
-    </div>
 
+      <div>
+      <img src="../images/index-banner.png" style="width: 114%; height: 105%" class="header-image">
+      </div>
+      
+    </div>
 
     <div class="about-us-container">
-      <div class="about-us-one">
+      
+      <img src="../images/about-us-index.png" style="width: 95%; height: 95%" >
+      
+    </div> 
 
-      </div>
+</div>
 
-      <div class="about-us-two">
 
-      </div>
 
-      <div class="about-us-three">
 
-      </div>
 
-      <div class="about-us-four">
-
-      </div>
-
-    </div>
-  </div>
 
 </body>
 

@@ -6,6 +6,11 @@
   padding: 0;
 }
 
+#container{
+  height: 100%;
+  width: 100%;
+}
+
 
 body {
   background-color: rgb(252, 252, 252);
@@ -13,6 +18,13 @@ body {
   box-sizing: border-box;
   font-family: montserrat;
 }
+
+.book-an-appointment-btn{
+  position: absolute;
+  bottom: 12%;
+  left: 11%;
+}
+
 
 p {
   margin: 0;
