@@ -96,7 +96,7 @@ export const cancelSchedule = async (userData) => {
 
 export const getDoctorAppointments = async () => {
     try{
-        const response = await axios.get("http://localhost:3000/server/api/users/get_appointments.php");
+        const response = await axios.get("http://localhost:3000/server/api/users/get_doctor_schedules.php");
         console.log(response.data);
         return response.data;
     }catch(err){
@@ -105,3 +105,15 @@ export const getDoctorAppointments = async () => {
         return err.response.data;
     }
 };
+
+export const bookAppointment = async (appointmentData) => {
+    try{
+        const response = await axios.post("http://localhost:3000/server/api/users/book_appointment.php", appointmentData);
+        console.log(response.data);
+        return response.data;
+    }catch(err){
+        console.log(err.message);
+        console.log(err.response.data);
+        return err.response.data;
+    }
+}

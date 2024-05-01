@@ -215,3 +215,8 @@ select {
   color: white;
   border: solid gray 1px;
 }
+
+/* override bootstrap */
+a:hover {
+  color: #6e63f5;
+}

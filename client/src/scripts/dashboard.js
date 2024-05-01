@@ -5,11 +5,11 @@ import { requestToBeDoctor,
         getSchedules, 
         cancelSchedule, 
         editSchedule, 
-        getDoctorAppointments } 
+        getDoctorAppointments,
+        bookAppointment } 
 from "./essentials.js";
 
-import { getCookie } from "./cookieHandler.js";
-import { deleteCookie } from "./cookieHandler.js";
+import { setCookie, getCookie, deleteCookie  } from "./cookieHandler.js";
 
 document.addEventListener("DOMContentLoaded", async () => {
     const handleUserDashboard = async (userData) => {
@@ -84,18 +84,23 @@ document.addEventListener("DOMContentLoaded", async () => {
         const appointments = await getDoctorAppointments();
         const doctors = appointments.doctors;
 
+        let doctorAppointments = {};
+
         for(let i = 0; i < doctors.length; i++) {
             const doctorDetails = doctors[i].doctor_details;
             const doctorSchedule = doctors[i].doctor_schedule;
+            doctorAppointments = {...doctorAppointments, [doctorDetails.doctor_id]: doctorSchedule};
 
-            cardContainerHTML += `<div class="content-card">`;
-            cardContainerHTML += `<h2>Doctor    ${doctorDetails.doctor_name}</h2>`;
+            cardContainerHTML += `<div class="content-card" data-doctor-id=${doctorDetails.doctor_id}>`;
+            cardContainerHTML += `<h2>Doctor ${doctorDetails.doctor_name}</h2>`;
             cardContainerHTML += `<p style="text-align: start">${doctorDetails.doctor_email}</p>`;
             cardContainerHTML += `<p style="text-align: start">${doctorDetails.doctor_gender}</p>`;
-            cardContainerHTML += `<button class="btn btn-danger delete-card"></button>`;
-            cardContainerHTML += '<button class="btn btn-success">Book Appointment</button>';
+            // cardContainerHTML += `<button class="btn btn-danger delete-card">&times</button>`;
+            cardContainerHTML += '<button class="btn btn-success" data-open-appointments>Book Appointment</button>';
             cardContainerHTML += `</div>`;
         }
+
+        setCookie("doctorAppointments", doctorAppointments);
 
         cardContainer.innerHTML = cardContainerHTML;
         rightPane.appendChild(cardContainer);
@@ -105,6 +110,8 @@ document.addEventListener("DOMContentLoaded", async () => {
         //add everything to the parent container
         contentContainer.appendChild(leftPane);
         contentContainer.appendChild(rightPane);
+        const openAppointmentsButtons = document.querySelectorAll("[data-open-appointments]");
+        processShowAppointments(openAppointmentsButtons);
     }
 
     const generateAdminPage = async () => {
@@ -199,6 +206,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                 <th scope="col">Action</th>
             </tr>
         `;
+        
 
         tableHeader.innerHTML = tableHeaderHTML;
 
@@ -361,3 +369,56 @@ const processScheduleUpdate = (buttonArray, type) => {
         }); 
     });
 };
+
+const processShowAppointments = (buttonArray) => {
+    const appointmentsBody = document.getElementById("appointments-body");
+
+    buttonArray.forEach((button) => {
+        button.addEventListener("click", async (event) => {
+            appointmentsBody.innerHTML = "";
+            const doctorCard = event.target.closest(".content-card");
+
+            const doctorID = doctorCard.getAttribute("data-doctor-id");
+            const doctorSchedules = getCookie("doctorAppointments")[doctorID];
+            console.log(doctorSchedules);
+        
+            for(let i = 0; i < doctorSchedules.length; i++) {
+                let appointmentCard = document.createElement("div");
+                appointmentCard.className = "appointment-card";
+                let appointmentCardHTML = `
+                    <h3><span style="color: red">WHEN: </span>${doctorSchedules[i].date}</h3>`;
+
+                if(doctorSchedules[i].is_available === "1"){
+                    appointmentCardHTML += `<button data-book-appointment class="btn btn-success">Book</button>`;
+                }else{
+                    appointmentCardHTML += `<div style="unavailable">
+                                                <p>Schedule already booked</p>                            
+                                        </div>`
+                }
+                
+                appointmentCard.innerHTML = appointmentCardHTML;
+                appointmentsBody.appendChild(appointmentCard);
+
+                const bookButton = appointmentCard.querySelector("[data-book-appointment]");
+
+                if(!bookButton) continue;
+
+                bookButton.addEventListener("click", async () => {
+                    const currentUser = getCookie("currentUser");
+                    let appointmentDetails = {
+                        patient_id: currentUser.user_id,
+                        doctor_id: doctorID,
+                        schedule_id: doctorSchedules[i].schedule_id
+                    };
+
+                    const res = await bookAppointment(appointmentDetails);
+                    console.log(res);
+                    window.location.replace("dashboard.html");
+                });
+                
+            }
+
+            $("#book-appointment-modal").modal("show");
+        });
+    });
+}

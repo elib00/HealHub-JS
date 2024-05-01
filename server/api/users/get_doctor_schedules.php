@@ -39,7 +39,7 @@ if($method === "GET"){
         $doctorGender = $doctorDetails["doctor_gender"];
                 
         //get the set or available schedules of that doctor from the id
-        $getSchedulesQuery = "SELECT schedule_id, date from tblschedule WHERE doctor_id = '$doctorID'";
+        $getSchedulesQuery = "SELECT schedule_id, date, is_available from tblschedule WHERE doctor_id = '$doctorID'";
         $result3 = mysqli_query($connection, $getSchedulesQuery);
 
         if($result3 === false){
