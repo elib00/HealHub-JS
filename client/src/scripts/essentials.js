@@ -117,3 +117,15 @@ export const bookAppointment = async (appointmentData) => {
         return err.response.data;
     }
 }
+
+export const getNumberOfPatients = async () => {
+    try{
+        const response = await axios.get("http://localhost:3000/server/api/users/reports.php");
+        console.log(response.data);
+        return response.data;
+    }catch(err){
+        console.log(err.message);
+        console.log(err.response.data);
+        return err.response.data;
+    }
+}

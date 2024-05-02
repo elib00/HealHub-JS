@@ -163,7 +163,16 @@ document.addEventListener("DOMContentLoaded", async () => {
         tableBody.innerHTML = tableBodyHTML;
         tableContainer.appendChild(tableHeader);
         tableContainer.appendChild(tableBody);
+
+        const reportsButton = document.createElement('button');
+        reportsButton.className = "btn btn-success";
+        reportsButton.textContent = "Reports";
+        reportsButton.addEventListener("click", () => {
+            window.location = "reports.html";
+        });
+
         contentContainer.appendChild(tableContainer);   
+        contentContainer.appendChild(reportsButton);
 
         //add the event listeners for the accept buttons
         const acceptButtons = document.querySelectorAll("[data-accept]");
