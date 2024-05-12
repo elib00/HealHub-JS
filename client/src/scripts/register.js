@@ -1,4 +1,4 @@
-import { createUser } from "./authentication.js";
+import { postDataToServer } from "./essentials.js";
 
 document.addEventListener("DOMContentLoaded", () => {
     const registerForm = document.getElementById("register-form");
@@ -43,7 +43,7 @@ document.addEventListener("DOMContentLoaded", () => {
     registerForm.addEventListener("submit", async (event) => {
         event.preventDefault();
         const response = getUserData();
-        const result = await createUser({...response});
+        const result = await postDataToServer("users/create_account.php", {...response});
         if(result.success){
             responseTitle.textContent = "ACCOUNT CREATION SUCCESS"
             responseTitle.style.color = "green";

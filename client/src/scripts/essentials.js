@@ -1,3 +1,30 @@
+export const postDataToServer = async (pathString, clientData) => {
+    try{
+        const response = await axios.post(`http://localhost:3000/server/api/${pathString}`, clientData);
+        console.log(response.data);
+        return response.data;
+    }catch(err){
+        console.log(err.message);
+        console.log(err.response.data);
+        return err.response.data;
+    }
+};
+
+export const getDataFromServer = async (pathString) => {
+    try{
+        const response = await axios.get(`http://localhost:3000/server/api/${pathString}`);
+        console.log(response.data);
+        return response.data;
+    }catch(err){
+        console.log(err.message);
+        console.log(err.response.data);
+        return err.response.data;
+    }
+};
+
+
+
+
 export const requestToBeDoctor = async (userData) => {
     try{
         const response = await axios.post("http://localhost:3000/server/api/users/doctor_request.php", userData);
@@ -94,7 +121,7 @@ export const cancelSchedule = async (userData) => {
     }
 };
 
-export const getDoctorAppointments = async () => {
+export const getDoctorSchedules = async () => {
     try{
         const response = await axios.get("http://localhost:3000/server/api/users/get_doctor_schedules.php");
         console.log(response.data);
@@ -109,6 +136,42 @@ export const getDoctorAppointments = async () => {
 export const bookAppointment = async (appointmentData) => {
     try{
         const response = await axios.post("http://localhost:3000/server/api/users/book_appointment.php", appointmentData);
+        console.log(response.data);
+        return response.data;
+    }catch(err){
+        console.log(err.message);
+        console.log(err.response.data);
+        return err.response.data;
+    }
+}
+
+export const getCurrentDoctor = async (userData) => {
+    try{
+        const response = await axios.post("http://localhost:3000/server/api/users/get_current_doctor.php", userData);
+        console.log(response.data);
+        return response.data;
+    }catch(err){
+        console.log(err.message);
+        console.log(err.response.data);
+        return err.response.data;
+    }
+}
+
+export const getDoctorAppointments = async (doctorData) => {
+    try{
+        const response = await axios.post("http://localhost:3000/server/api/users/get_doctor_appointments.php", doctorData);
+        console.log(response.data);
+        return response.data;
+    }catch(err){
+        console.log(err.message);
+        console.log(err.response.data);
+        return err.response.data;
+    }
+}
+
+export const getUserAppointments = async (userData) => {
+    try{
+        const response = await axios.post("http://localhost:3000/server/api/users/get_user_appointments.php", userData);
         console.log(response.data);
         return response.data;
     }catch(err){

@@ -1,4 +1,4 @@
-import { validateUser } from "./authentication.js";
+import { postDataToServer } from "./essentials.js";
 import { setCookie } from "./cookieHandler.js";
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -29,7 +29,7 @@ document.addEventListener("DOMContentLoaded", () => {
         event.preventDefault();
         const pendingUser = getUserData();
         console.log(pendingUser);
-        const result = await validateUser({...pendingUser});
+        const result = await postDataToServer("users/validate_user.php", {...pendingUser});
         if(result.success){
             console.log(result.success);
 

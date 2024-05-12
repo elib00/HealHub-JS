@@ -1,31 +1,32 @@
-import { requestToBeDoctor, 
-        getDoctorUpgradeRequests, 
-        approveRequest, rejectRequest, 
-        setSchedule, 
-        getSchedules, 
-        cancelSchedule, 
-        editSchedule, 
-        getDoctorAppointments,
-        bookAppointment } 
-from "./essentials.js";
-
+import { postDataToServer, getDataFromServer } from "./essentials.js";
 import { setCookie, getCookie, deleteCookie  } from "./cookieHandler.js";
 
 document.addEventListener("DOMContentLoaded", async () => {
     const handleUserDashboard = async (userData) => {
+        const appointments = await postDataToServer("users/get_user_appointments.php", userData);
+        console.log(appointments);
         await generateUserPage();
         const doctorRequestBtn = document.getElementById("doctor-request-button");
     
         doctorRequestBtn.addEventListener("click", async () => {
             const doctorSpecialization = document.getElementById("doctor-specialization").value;
             console.log(userData);
-            const result = await requestToBeDoctor({specialization: doctorSpecialization, ...userData});
+            const result = await postDataToServer("users/doctor_request.php", {specialization: doctorSpecialization, ...userData});
             console.log(result);
         });
     };
     
     const handleDoctorDashboard = async (userData) => {
+        const res = await postDataToServer("users/get_current_doctor.php", {...userData});
+        const currentDoctor = res.doctor;
+        const appointments = await postDataToServer("users/get_doctor_appointments.php", {
+            doctor_id: currentDoctor.doctor_id
+        });
+
+        console.log(appointments);
+
         await generateDoctorPage(userData);
+
         const setScheduleBtn = document.getElementById("set-schedule-button");
 
         const statusTitle = document.getElementById("status-title");
@@ -42,7 +43,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             }
 
             console.log(data);
-            const result = await setSchedule(data);
+            const result = await postDataToServer("users/set_schedule.php", {...data});
             console.log(result);
 
             statusMessage.textContent = "Schedule created successfully.";
@@ -81,7 +82,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     
         let cardContainerHTML = ``;
 
-        const appointments = await getDoctorAppointments();
+        const appointments = await getDataFromServer("users/get_doctor_schedules.php");
         const doctors = appointments.doctors;
 
         let doctorAppointments = {};
@@ -138,7 +139,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
         const tableBody = document.createElement("tbody");
 
-        const result = await getDoctorUpgradeRequests();
+        const result = await getDataFromServer("users/get_upgrade_requests.php");
         const requests = result.requests;
         console.log(requests);
 
@@ -186,6 +187,9 @@ document.addEventListener("DOMContentLoaded", async () => {
                     <button type="submit" id="set-schedule-button" class="btn btn-success">Submit</button>
                 </div>
             </form>
+            <div class="mb-3">
+                <button id="view-appointments-button" class="btn btn-success">Appointments</button>
+            </div>
         `;
 
         const rightPane = document.createElement("div");
@@ -212,9 +216,8 @@ document.addEventListener("DOMContentLoaded", async () => {
 
         const tableBody = document.createElement("tbody");
 
-        const result = await getSchedules(userData);
+        const result = await postDataToServer("users/get_schedules.php", {...userData});
         const schedules = result.schedules;
-        console.log(result);
 
         let tableBodyHTML = ``;
 
@@ -246,6 +249,12 @@ document.addEventListener("DOMContentLoaded", async () => {
         //add the event listeners for the accept buttons
         const editScheduleButtons = document.querySelectorAll("[data-edit-schedule]");
         const cancelScheduleButtons = document.querySelectorAll("[data-cancel-schedule]");
+        const viewAppointmentsButton = document.getElementById("view-appointments-button");
+
+        viewAppointmentsButton.addEventListener("click", () => {
+            console.log(getCookie("currentUser"));
+        });
+
         processScheduleUpdate(editScheduleButtons, "edit");
         processScheduleUpdate(cancelScheduleButtons, "cancel");
     }
@@ -315,12 +324,12 @@ const processDoctorRequest = (buttonArray, type) => {
             };
     
             if(type === "accept"){
-                result = await approveRequest(data);
+                result = await postDataToServer("admin/approve_request.php", {...data});
                 statusMessage.textContent = "User is now a Doctor.";
                 statusTitle.textContent = "ACCEPTED";
                 statusMessage.style.color = "green";
             }else{
-                result = await rejectRequest(data);
+                result = await postDataToServer("admin/reject_request.php", {...data});
                 statusMessage.textContent = "Request to be a Doctor has been rejected.";
                 statusTitle.textContent = "REJECTED";
                 statusMessage.style.color = "red";
@@ -352,12 +361,12 @@ const processScheduleUpdate = (buttonArray, type) => {
             console.log(data);
     
             if(type === "edit"){
-                result = await editSchedule(data);
+                result = await postDataToServer("users/edit_schedule.php", {...data});
                 statusMessage.textContent = "Schedule updated successfully.";
                 statusTitle.textContent = "UPDATE SCHEDULE";
                 statusMessage.style.color = "green";
             }else{
-                result = await cancelSchedule(data);
+                result = await postDataToServer("users/cancel_schedule.php", {...data});
                 statusMessage.textContent = "Schedule has been cancelled successfully.";
                 statusTitle.textContent = "CANCEL SCHEDULE";
                 statusMessage.style.color = "red";
@@ -366,6 +375,9 @@ const processScheduleUpdate = (buttonArray, type) => {
 
             $("#status-modal").modal("show");
             console.log(result);
+            setTimeout(() => {
+                window.location.replace("dashboard.html");
+            }, 2000);
         }); 
     });
 };
@@ -411,7 +423,7 @@ const processShowAppointments = (buttonArray) => {
                         schedule_id: doctorSchedules[i].schedule_id
                     };
 
-                    const res = await bookAppointment(appointmentDetails);
+                    const res = await postDataToServer("users/book_appointment.php", {...appointmentDetails});
                     console.log(res);
                     window.location.replace("dashboard.html");
                 });
