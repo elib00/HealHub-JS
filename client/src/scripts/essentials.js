@@ -1,4 +1,4 @@
-export const requestToBeDoctor = async (userData) => {
+export const postDataToServer = async (pathString, clientData) => {
     try{
         const response = await axios.post(`http://localhost:3000/server/api/${pathString}`, clientData);
         console.log(response.data);

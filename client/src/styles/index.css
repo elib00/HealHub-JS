@@ -195,9 +195,12 @@ p.header-lowtext {
 }
 
 .about-us-container {
+  position: relative;
   margin-top: 50px;
   margin-left: 5%;
   /* background-color: orange;  */
   height: auto;
   width: auto;
 }
+
+/*for the borderless tables*/

@@ -3,7 +3,7 @@ import { setCookie, getCookie, deleteCookie  } from "./cookieHandler.js";
 
 document.addEventListener("DOMContentLoaded", async () => {
     const handleUserDashboard = async (userData) => {
-        const appointments = await postDataToServer("users/get_user_appointments.php", userData);
+        const appointments = await postDataToServer("users/get_user_appointments.php", {...userData});
         console.log(appointments);
         await generateUserPage();
         const doctorRequestBtn = document.getElementById("doctor-request-button");
@@ -19,13 +19,14 @@ document.addEventListener("DOMContentLoaded", async () => {
     const handleDoctorDashboard = async (userData) => {
         const res = await postDataToServer("users/get_current_doctor.php", {...userData});
         const currentDoctor = res.doctor;
+
         const appointments = await postDataToServer("users/get_doctor_appointments.php", {
             doctor_id: currentDoctor.doctor_id
         });
 
         console.log(appointments);
 
-        await generateDoctorPage(userData);
+        await generateDoctorPage({...userData}, {...currentDoctor}, {...appointments});
 
         const setScheduleBtn = document.getElementById("set-schedule-button");
 
@@ -85,12 +86,12 @@ document.addEventListener("DOMContentLoaded", async () => {
         const appointments = await getDataFromServer("users/get_doctor_schedules.php");
         const doctors = appointments.doctors;
 
-        let doctorAppointments = {};
+        let doctorSchedules = {};
 
         for(let i = 0; i < doctors.length; i++) {
             const doctorDetails = doctors[i].doctor_details;
             const doctorSchedule = doctors[i].doctor_schedule;
-            doctorAppointments = {...doctorAppointments, [doctorDetails.doctor_id]: doctorSchedule};
+            doctorSchedules = {...doctorSchedules, [doctorDetails.doctor_id]: doctorSchedule};
 
             cardContainerHTML += `<div class="content-card" data-doctor-id=${doctorDetails.doctor_id}>`;
             cardContainerHTML += `<h2>Doctor ${doctorDetails.doctor_name}</h2>`;
@@ -101,7 +102,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             cardContainerHTML += `</div>`;
         }
 
-        setCookie("doctorAppointments", doctorAppointments);
+        setCookie("doctorSchedules", {...doctorSchedules});
 
         cardContainer.innerHTML = cardContainerHTML;
         rightPane.appendChild(cardContainer);
@@ -182,7 +183,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         processDoctorRequest(rejectButtons, "reject");
     };
 
-    const generateDoctorPage = async (userData) => {
+    const generateDoctorPage = async (userData, doctorData, doctorAppointments) => {
         const contentContainer = document.getElementById("content-container");
         const leftPane = document.createElement("div");
         leftPane.className = "left-pane";
@@ -260,8 +261,9 @@ document.addEventListener("DOMContentLoaded", async () => {
         const cancelScheduleButtons = document.querySelectorAll("[data-cancel-schedule]");
         const viewAppointmentsButton = document.getElementById("view-appointments-button");
 
-        viewAppointmentsButton.addEventListener("click", () => {
-            console.log(getCookie("currentUser"));
+        viewAppointmentsButton.addEventListener("click", async () => {
+            setCookie("currentDoctor", {...doctorData});
+            setCookie("currentDoctorAppointments", {...doctorAppointments});
         });
 
         processScheduleUpdate(editScheduleButtons, "edit");

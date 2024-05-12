@@ -49,8 +49,8 @@ p {
   align-items: center;
   width: 100%;
   height: calc(100% - 100px);
-  overflow-y: auto;
-  /* border: solid black 1px; */
+  overflow-y: hidden;
+  box-sizing: border-box;
 }
 
 .left-pane {
@@ -65,10 +65,11 @@ p {
 
 .right-pane {
   display: flex;
-  align-items: center;
   justify-content: center;
   flex: 1;
   height: 100%;
+  /* overflow-y: auto; */
+  box-sizing: border-box;
 }
 
 .btn-request {
@@ -133,4 +134,24 @@ p {
   width: 90%;
   background-color: red;
   color: white;
+}
+
+#doctor-name-wrapper {
+  display: flex;
+  align-items: center;
+  height: 90px;
+  width: 100%;
+  background-color: blue;
+  margin-top: 1rem;
+}
+
+.custom-table th {
+  width: 70%;
+  text-align: start;
+  padding: 1rem;
+}
+
+.custom-table td {
+  text-align: center;
+  padding: 1rem;
 }
