@@ -145,9 +145,15 @@ export const bookAppointment = async (appointmentData) => {
     }
 }
 
+<<<<<<< HEAD
 export const getCurrentDoctor = async (userData) => {
     try{
         const response = await axios.post("http://localhost:3000/server/api/users/get_current_doctor.php", userData);
+=======
+export const getNumberOfPatients = async () => {
+    try{
+        const response = await axios.get("http://localhost:3000/server/api/users/reports.php");
+>>>>>>> 7fe707d1bcd63e67e0cc2c4dac95ba5c88eb0e7b
         console.log(response.data);
         return response.data;
     }catch(err){
@@ -156,6 +162,7 @@ export const getCurrentDoctor = async (userData) => {
         return err.response.data;
     }
 }
+<<<<<<< HEAD
 
 export const getDoctorAppointments = async (doctorData) => {
     try{
@@ -180,3 +187,5 @@ export const getUserAppointments = async (userData) => {
         return err.response.data;
     }
 }
+=======
+>>>>>>> 7fe707d1bcd63e67e0cc2c4dac95ba5c88eb0e7b
