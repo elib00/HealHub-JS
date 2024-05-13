@@ -8,6 +8,7 @@
 body {
   background-color: rgb(252, 252, 252);
   height: 100vh;
+  width: 100vw;
   box-sizing: border-box;
   font-family: montserrat;
 }
@@ -45,11 +46,8 @@ p {
 
 #content-container {
   display: flex;
-  justify-content: center;
-  align-items: center;
   width: 100%;
   height: calc(100% - 100px);
-  overflow-y: hidden;
   box-sizing: border-box;
 }
 
@@ -58,17 +56,17 @@ p {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  width: 40%;
   height: 100%;
   background-color: blanchedalmond;
+  box-sizing: border-box;
 }
 
 .right-pane {
   display: flex;
   justify-content: center;
-  flex: 1;
+  align-items: center;
   height: 100%;
-  /* overflow-y: auto; */
+  flex: 1;
   box-sizing: border-box;
 }
 
@@ -139,10 +137,9 @@ p {
 #doctor-name-wrapper {
   display: flex;
   align-items: center;
-  height: 90px;
+  height: 80px;
   width: 100%;
   background-color: blue;
-  margin-top: 1rem;
 }
 
 .custom-table th {
@@ -153,5 +150,34 @@ p {
 
 .custom-table td {
   text-align: center;
-  padding: 1rem;
+  padding: 0 10px;
+}
+
+#schedule-wrapper {
+  width: 50%;
+  height: 100%;
+  box-sizing: border-box;
+  background-color: white;
+  padding: 30px;
+  border-radius: 20px;
+}
+
+#appointment-request-wrapper {
+  width: 50%;
+  height: 100%;
+  background-color: white;
+  padding: 30px;
+  border-radius: 20px;
+}
+
+#doctor-calendar-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 90%;
+  height: 90%;
+  background-color: white;
+  border-radius: 10px;
+  padding: 5px;
 }

@@ -24,38 +24,37 @@ document.addEventListener("DOMContentLoaded", async () => {
             doctor_id: currentDoctor.doctor_id
         });
 
-        console.log(appointments);
+        const doctorSchedules = await postDataToServer("users/get_schedules.php", {...userData});
+        await generateDoctorPage2({...userData}, {...currentDoctor}, appointments.appointments, doctorSchedules.schedules);
 
-        await generateDoctorPage({...userData}, {...currentDoctor}, {...appointments});
+        // const setScheduleBtn = document.getElementById("set-schedule-button");
 
-        const setScheduleBtn = document.getElementById("set-schedule-button");
+        // const statusTitle = document.getElementById("status-title");
+        // const statusMessage = document.getElementById("status-message");    
 
-        const statusTitle = document.getElementById("status-title");
-        const statusMessage = document.getElementById("status-message");    
+        // setScheduleBtn.addEventListener("click", async (event) => {
+        //     event.preventDefault();
+        //     const schedule = document.getElementById("schedule-date").value;
+        //     console.log(schedule);
 
-        setScheduleBtn.addEventListener("click", async (event) => {
-            event.preventDefault();
-            const schedule = document.getElementById("schedule-date").value;
-            console.log(schedule);
+        //     const data = {
+        //         account_id: userData.account_id,
+        //         date: schedule,
+        //     }
 
-            const data = {
-                account_id: userData.account_id,
-                date: schedule,
-            }
+        //     console.log(data);
+        //     const result = await postDataToServer("users/set_schedule.php", {...data});
+        //     console.log(result);
 
-            console.log(data);
-            const result = await postDataToServer("users/set_schedule.php", {...data});
-            console.log(result);
-
-            statusMessage.textContent = "Schedule created successfully.";
-            statusTitle.textContent = "SCHEDULE CREATED";
-            statusMessage.style.color = "green";
-            $("#status-modal").modal("show");
+        //     statusMessage.textContent = "Schedule created successfully.";
+        //     statusTitle.textContent = "SCHEDULE CREATED";
+        //     statusMessage.style.color = "green";
+        //     $("#status-modal").modal("show");
             
-            setTimeout(() => {
-                window.location.replace("dashboard.html");
-            }, 2000);
-        });
+        //     setTimeout(() => {
+        //         window.location.replace("dashboard.html");
+        //     }, 2000);
+        // });
     };
     
     const handleAdminDashboard = async (userData) => {
@@ -183,7 +182,100 @@ document.addEventListener("DOMContentLoaded", async () => {
         processDoctorRequest(rejectButtons, "reject");
     };
 
-    const generateDoctorPage = async (userData, doctorData, doctorAppointments) => {
+    const generateDoctorPage2 = async (userData, doctorData, doctorAppointments, schedules) => {
+        console.log(doctorAppointments);
+        console.log(schedules);
+
+        const contentContainer = document.getElementById("content-container");
+
+        const leftPane = document.createElement("div");
+        leftPane.className = "left-pane";
+        leftPane.style = "background-color: blanchedalmond; padding-top: 20px; padding-bottom: 20px; padding-left: 20px; width: 70%";
+
+        let leftPaneHTML = `
+            <div style="width: 100%; height: 100%; display: flex; flex-direction: column; align-items: center; 
+                box-sizing: border-box; gap: 10px">
+                <div id="doctor-name-wrapper" style="background-color: blue;">
+                    <h2 style="margin-left: 10px; color: white">Hello, Doctor ${doctorData.doctor_specialization}</h2>
+                </div>
+                <div style="display: flex; height: calc(100% - 80px); width: 100%; gap: 1rem; box-sizing: border-box">
+                    <div id="schedule-wrapper">
+                        <h2 style="height: 10%;">Schedule</h2>
+                        <div style="height: 90%; width: 100%; overflow-y: auto; box-sizing: border-box">
+                        <table class="table-borderless custom-table">
+                            <tbody>
+        `;
+
+        console.log(schedules.length);
+        for(let i = 0; i < schedules.length; i++){
+            leftPaneHTML += `
+                <tr>
+                    <th scope="row">${schedules[i].date}</th>
+                    <td><button class="btn btn-success" data-schedule-id="${schedules[i].schedule_id}">Edit</button></td>
+                    <td><button class="btn btn-danger" data-schedule-id="${schedules[i].schedule_id}">Cancel</button></td>
+                </tr>
+            `;
+        }
+
+        leftPaneHTML += `
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+        `;
+
+        leftPaneHTML += `
+            <div id="appointment-request-wrapper">
+                <h2 style="height: 10%;">Appointment Requests</h2>
+                <div style="height: 90%; width: 100%; overflow-y: auto">
+                    <table class="table-borderless custom-table">
+                        <tbody>
+        `;
+
+        for(let i = 0; i < doctorAppointments.length; i++){
+            leftPaneHTML += `
+                <tr>
+                    <th scope="row">January 20, 2000</th>
+                    <td><button class="btn btn-success">Edit</button></td>
+                    <td><button class="btn btn-danger">Cancel</button></td>
+                </tr>
+            `;
+        }
+
+        leftPaneHTML += `
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+
+        
+        const rightPane = document.createElement("div");
+        rightPane.className = "right-pane";
+        rightPane.style = "width: 30%; background-color: blanchedalmond";
+
+        let rightPaneHTML = `
+            <div id="doctor-calendar-container">
+                <div style="width: 100%; flex: 1; border: solid black 1px; gap: 10px; 
+                display: flex; flex-direction: column; align-items: center; justify-content: center">
+                    <img style="width: 50%; height: 50%; border: solid black 1px">
+                    <h2>Doctor ${doctorData.doctor_name}</h2>
+                    <h3>${doctorData.doctor_specialization}</h3>
+                </div>
+                <div style="width: 100%; flex: 1; border: solid black 1px"></div>
+            </div>
+        `;
+
+
+        leftPane.innerHTML = leftPaneHTML;
+        rightPane.innerHTML = rightPaneHTML;
+        contentContainer.append(leftPane);
+        contentContainer.append(rightPane);
+    };
+
+    const generateDoctorPage = async (userData, doctorData, doctorAppointments, doctorSchedules) => {
         const contentContainer = document.getElementById("content-container");
         const leftPane = document.createElement("div");
         leftPane.className = "left-pane";
