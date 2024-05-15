@@ -6,8 +6,18 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
     integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+
   <link rel="stylesheet" href="../styles/index.css">
   <link rel="stylesheet" href="../styles/dashboard.css">
+
+  <!-- fontawesome -->
+  <script src="https://kit.fontawesome.com/10acabc4b5.js" crossorigin="anonymous"></script>
+
+  <!-- bootstrap icons -->
+  <link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.8.1/font/bootstrap-icons.min.css">
+
+
   <script src="https://unpkg.com/axios/dist/axios.min.js" defer></script>
   <script type="module" src="../scripts/dashboard.js" defer></script>
   <title>Dashboard</title>
@@ -100,6 +110,33 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-outline-danger" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- Edit schedule modal -->
+  <div class="modal fade" id="schedule-modify-modal" tabindex="-1" role="dialog"
+    aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="schedule-modify-title"></h5>
+          <button type="button" class="btn btn-danger" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="form-group">
+            <label id="schedule-modify-label" for="edit-schedule-calendar" style="font-size: 1.2rem"></label>
+            <input type="date" class="form-control" id="edit-schedule-calendar" aria-describedby="emailHelp"
+              style="margin-top: 5px; margin-bottom: 5px">
+            <small id="schedule-modify-small" class="form-text text-muted"></small>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button id="schedule-modify-button" type="button" class="btn"></button>
         </div>
       </div>
     </div>

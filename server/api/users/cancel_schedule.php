@@ -5,8 +5,8 @@ include_once("../../includes/cors.php");
 $method = $_SERVER["REQUEST_METHOD"];
  
 if($method === "POST"){
-    $userData = json_decode(file_get_contents('php://input'), true);
-    $scheduleID = mysqli_real_escape_string($connection, $userData["schedule_id"]);
+    $scheduleData = json_decode(file_get_contents('php://input'), true);
+    $scheduleID = mysqli_real_escape_string($connection, $scheduleData["schedule_id"]);
     
     $query1 = "DELETE FROM tblschedule WHERE schedule_id = '$scheduleID'";
     $result = mysqli_query($connection, $query1);

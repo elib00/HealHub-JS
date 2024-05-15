@@ -142,10 +142,16 @@ p {
   background-color: blue;
 }
 
+.custom-table {
+  width: 100%;
+  height: fit-content;
+}
+
 .custom-table th {
-  width: 70%;
+  width: 80%;
   text-align: start;
   padding: 1rem;
+  font-weight: 500;
 }
 
 .custom-table td {
@@ -180,4 +186,8 @@ p {
   background-color: white;
   border-radius: 10px;
   padding: 5px;
+}
+
+.btn-icon:hover {
+  cursor: pointer;
 }

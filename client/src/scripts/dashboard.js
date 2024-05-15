@@ -1,11 +1,13 @@
-import { postDataToServer, getDataFromServer } from "./essentials.js";
+import { postDataToServer, getDataFromServer, numberToMonth } from "./essentials.js";
 import { setCookie, getCookie, deleteCookie  } from "./cookieHandler.js";
 
 document.addEventListener("DOMContentLoaded", async () => {
     const handleUserDashboard = async (userData) => {
         const appointments = await postDataToServer("users/get_user_appointments.php", {...userData});
-        console.log(appointments);
-        await generateUserPage();
+        const doctorSchedulesData = await getDataFromServer("users/get_doctor_schedules.php");
+        console.log(doctorSchedulesData);
+
+        await generateUserPage(appointments, doctorSchedulesData);
         const doctorRequestBtn = document.getElementById("doctor-request-button");
     
         doctorRequestBtn.addEventListener("click", async () => {
@@ -25,7 +27,8 @@ document.addEventListener("DOMContentLoaded", async () => {
         });
 
         const doctorSchedules = await postDataToServer("users/get_schedules.php", {...userData});
-        await generateDoctorPage2({...userData}, {...currentDoctor}, appointments.appointments, doctorSchedules.schedules);
+        const appointmentRequests = await postDataToServer("users/get_appointment_requests.php", {...currentDoctor});
+        await generateDoctorPage2({...userData}, {...currentDoctor}, appointments.appointments, doctorSchedules.schedules, appointmentRequests.appointment_requests);
 
         // const setScheduleBtn = document.getElementById("set-schedule-button");
 
@@ -61,9 +64,9 @@ document.addEventListener("DOMContentLoaded", async () => {
         await generateAdminPage();
     }
     
-    const generateUserPage = async () => {
+    const generateUserPage = async (appointments, doctorSchedulesData) => {
         const contentContainer = document.getElementById("content-container");
-    
+
         //create the left pane
         const leftPane = document.createElement("div");
         leftPane.className = "left-pane";
@@ -82,9 +85,8 @@ document.addEventListener("DOMContentLoaded", async () => {
     
         let cardContainerHTML = ``;
 
-        const appointments = await getDataFromServer("users/get_doctor_schedules.php");
-        const doctors = appointments.doctors;
-
+        // setCookie("doctorSchedules", doctorSchedules);
+        const doctors = doctorSchedulesData.doctors;
         let doctorSchedules = {};
 
         for(let i = 0; i < doctors.length; i++) {
@@ -97,11 +99,9 @@ document.addEventListener("DOMContentLoaded", async () => {
             cardContainerHTML += `<p style="text-align: start">${doctorDetails.doctor_email}</p>`;
             cardContainerHTML += `<p style="text-align: start">${doctorDetails.doctor_gender}</p>`;
             // cardContainerHTML += `<button class="btn btn-danger delete-card">&times</button>`;
-            cardContainerHTML += '<button class="btn btn-success" data-open-appointments>Book Appointment</button>';
+            cardContainerHTML += '<button class="btn btn-success" data-open-appointments>Book Schedule</button>';
             cardContainerHTML += `</div>`;
         }
-
-        setCookie("doctorSchedules", {...doctorSchedules});
 
         cardContainer.innerHTML = cardContainerHTML;
         rightPane.appendChild(cardContainer);
@@ -112,7 +112,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         contentContainer.appendChild(leftPane);
         contentContainer.appendChild(rightPane);
         const openAppointmentsButtons = document.querySelectorAll("[data-open-appointments]");
-        processShowAppointments(openAppointmentsButtons);
+        processShowAppointments(openAppointmentsButtons, doctorSchedules);
     }
 
     const generateAdminPage = async () => {
@@ -182,9 +182,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         processDoctorRequest(rejectButtons, "reject");
     };
 
-    const generateDoctorPage2 = async (userData, doctorData, doctorAppointments, schedules) => {
-        console.log(doctorAppointments);
-        console.log(schedules);
+    const generateDoctorPage2 = async (userData, doctorData, doctorAppointments, schedules, appointmentRequests) => {
 
         const contentContainer = document.getElementById("content-container");
 
@@ -196,23 +194,29 @@ document.addEventListener("DOMContentLoaded", async () => {
             <div style="width: 100%; height: 100%; display: flex; flex-direction: column; align-items: center; 
                 box-sizing: border-box; gap: 10px">
                 <div id="doctor-name-wrapper" style="background-color: blue;">
-                    <h2 style="margin-left: 10px; color: white">Hello, Doctor ${doctorData.doctor_specialization}</h2>
+                    <h2 style="margin-left: 10px; color: white">Hello, Doctor ${doctorData.doctor_name}</h2>
                 </div>
                 <div style="display: flex; height: calc(100% - 80px); width: 100%; gap: 1rem; box-sizing: border-box">
                     <div id="schedule-wrapper">
                         <h2 style="height: 10%;">Schedule</h2>
-                        <div style="height: 90%; width: 100%; overflow-y: auto; box-sizing: border-box">
-                        <table class="table-borderless custom-table">
-                            <tbody>
+                        <div style="display: flex; justify-content: center; height: 90%; width: 100%; overflow-y: auto; box-sizing: border-box">
+                            <table class="table-borderless custom-table">
+                                <tbody>
         `;
 
         console.log(schedules.length);
         for(let i = 0; i < schedules.length; i++){
+            const date = schedules[i].date;
+            const nums = date.split("-");
+            const year = nums[0];
+            const month = numberToMonth(nums[1]);
+            const day = nums[2];
+
             leftPaneHTML += `
                 <tr>
-                    <th scope="row">${schedules[i].date}</th>
-                    <td><button class="btn btn-success" data-schedule-id="${schedules[i].schedule_id}">Edit</button></td>
-                    <td><button class="btn btn-danger" data-schedule-id="${schedules[i].schedule_id}">Cancel</button></td>
+                    <th scope="row">${month} ${day}, ${year}</th>
+                    <td><i class="fa-solid fa-file-pen fa-xl btn-icon" style="color: green" data-edit-schedule data-schedule-id="${schedules[i].schedule_id}" title="Edit"></i></td>
+                    <td><i class="fa-solid fa-xmark fa-xl btn-icon" style="color: red" data-cancel-schedule data-schedule-id="${schedules[i].schedule_id}" title="Cancel"></i></td>
                 </tr>
             `;
         }
@@ -232,12 +236,18 @@ document.addEventListener("DOMContentLoaded", async () => {
                         <tbody>
         `;
 
-        for(let i = 0; i < doctorAppointments.length; i++){
+        console.log(appointmentRequests);
+        for(let i = 0; i < appointmentRequests.length; i++){
             leftPaneHTML += `
                 <tr>
-                    <th scope="row">January 20, 2000</th>
-                    <td><button class="btn btn-success">Edit</button></td>
-                    <td><button class="btn btn-danger">Cancel</button></td>
+                    <th scope="row"><span style="margin-right: 10px">${appointmentRequests[i].name}</span> 
+                        <i class="fa-solid fa-address-card fa-xl btn-icon" style="color: blue" data-view-user-details data-request-index="${i}" title="Details"></i></th>
+                    
+                    <td><i class="fa-solid fa-check fa-xl btn-icon" style="color: green" title="Approve" 
+                        data-accept-request data-request-id="${appointmentRequests[i].request_id}"></i></td>
+
+                    <td><i class="fa-solid fa-xmark fa-xl btn-icon" style="color: red" title="Reject"
+                        data-reject-request data-request-id="${appointmentRequests[i].request_id}" ></i></td>
                 </tr>
             `;
         }
@@ -273,6 +283,17 @@ document.addEventListener("DOMContentLoaded", async () => {
         rightPane.innerHTML = rightPaneHTML;
         contentContainer.append(leftPane);
         contentContainer.append(rightPane);
+
+        const editScheduleButtons = document.querySelectorAll("[data-edit-schedule]");
+        const cancelScheduleButtons = document.querySelectorAll("[data-cancel-schedule]");
+        const viewUserDetailsButtons = document.querySelectorAll("[data-view-user-details]");
+        const acceptAppointmentRequestButtons = document.querySelectorAll("[data-accept-request]");
+        const rejectAppointmentRequestButtons = document.querySelectorAll("[data-reject-request]");
+        
+
+        processScheduleUpdate(editScheduleButtons, "edit");
+        processScheduleUpdate(cancelScheduleButtons, "cancel");
+        processViewUserDetails(viewUserDetailsButtons, [...appointmentRequests]);
     };
 
     const generateDoctorPage = async (userData, doctorData, doctorAppointments, doctorSchedules) => {
@@ -449,43 +470,87 @@ const processScheduleUpdate = (buttonArray, type) => {
     const statusTitle = document.getElementById("status-title");
     const statusMessage = document.getElementById("status-message");
 
+    //for the schedule modify modal
+    const editCalendar = document.getElementById("edit-schedule-calendar");
+    const sendModifyRequestButton = document.getElementById("schedule-modify-button");
+    const scheduleModifyTitle = document.getElementById("schedule-modify-title");
+    const scheduleModifySmall = document.getElementById("schedule-modify-small");
+    const scheduleModifyLabel = document.getElementById("schedule-modify-label");
+
     buttonArray.forEach(button => {
         button.addEventListener("click", async (event) => {
-            const targetElement = event.target.closest("tr").querySelector("[data-schedule-id]");
-            const scheduleID = targetElement.textContent;
-            const newScheduleDate = document.querySelector("[data-new-schedule]").value;
+            const targetElement = event.target.closest("tr").querySelector("[data-edit-schedule]");
+            const scheduleID = targetElement.getAttribute("data-schedule-id");
             let result = null;
+            let scheduleData = {};
 
-            const data = {
-                schedule_id: scheduleID,
-                date: newScheduleDate
-            };
 
-            console.log(data);
-    
             if(type === "edit"){
-                result = await postDataToServer("users/edit_schedule.php", {...data});
-                statusMessage.textContent = "Schedule updated successfully.";
-                statusTitle.textContent = "UPDATE SCHEDULE";
-                statusMessage.style.color = "green";
-            }else{
-                result = await postDataToServer("users/cancel_schedule.php", {...data});
-                statusMessage.textContent = "Schedule has been cancelled successfully.";
-                statusTitle.textContent = "CANCEL SCHEDULE";
-                statusMessage.style.color = "red";
-                targetElement.parentNode.remove();
-            }
+                //modifying the content of the modal
+                sendModifyRequestButton.classList.remove("btn-danger");
+                sendModifyRequestButton.classList.add("btn-success");
+                sendModifyRequestButton.textContent = "Proceed Edit Schedule";
+                scheduleModifyTitle.textContent = "Edit Schedule";
+                scheduleModifySmall.textContent = "Change your schedule based on your availability";
+                scheduleModifyLabel.style.display = "block";
+                scheduleModifyLabel.textContent = "New Schedule";
+                editCalendar.style.display = "block";
+                
+                $("#schedule-modify-modal").modal("show");
 
-            $("#status-modal").modal("show");
-            console.log(result);
-            setTimeout(() => {
-                window.location.replace("dashboard.html");
-            }, 2000);
+                sendModifyRequestButton.addEventListener("click", async () => {
+                    scheduleData = {
+                        schedule_id: scheduleID,
+                        date: editCalendar.value
+                    }
+
+                    result = await postDataToServer("users/edit_schedule.php", {...scheduleData});
+                    $("#schedule-modify-modal").modal("hide");
+                    console.log(result);
+                    statusMessage.textContent = "Schedule updated successfully.";
+                    statusTitle.textContent = "UPDATE SCHEDULE";
+                    statusMessage.style.color = "green";
+
+                    $("#status-modal").modal("show");
+                    console.log(result);
+                    setTimeout(() => {
+                        window.location.replace("dashboard.html");
+                    }, 2000);
+                });
+            }else{                
+                sendModifyRequestButton.classList.remove("btn-success");
+                sendModifyRequestButton.classList.add("btn-danger");
+                sendModifyRequestButton.textContent = "Proceed Cancel Schedule?";
+                scheduleModifyTitle.textContent = "Cancel Schedule";
+                scheduleModifySmall.textContent = "That' okay! We can't control unforeseen events in our life";
+                scheduleModifyLabel.style.display = "none";
+                editCalendar.style.display = "none";
+                
+
+                $("#schedule-modify-modal").modal("show");
+
+                sendModifyRequestButton.addEventListener("click", async () => {
+                    scheduleData = {schedule_id: scheduleID};
+                    result = await postDataToServer("users/cancel_schedule.php", {...scheduleData});
+                    statusMessage.textContent = "Schedule has been cancelled successfully.";
+                    statusTitle.textContent = "CANCEL SCHEDULE";
+                    statusMessage.style.color = "red";
+                    // targetElement.parentNode.remove();
+
+                    $("#schedule-modify-modal").modal("hide");
+                    $("#status-modal").modal("show");
+                    console.log(result);
+                    setTimeout(() => {
+                        window.location.replace("dashboard.html");
+                    }, 2000);
+                });
+            }
         }); 
     });
 };
 
-const processShowAppointments = (buttonArray) => {
+const processShowAppointments = (buttonArray, doctorSchedules) => {
+    console.log(doctorSchedules);
     const appointmentsBody = document.getElementById("appointments-body");
 
     buttonArray.forEach((button) => {
@@ -494,16 +559,15 @@ const processShowAppointments = (buttonArray) => {
             const doctorCard = event.target.closest(".content-card");
 
             const doctorID = doctorCard.getAttribute("data-doctor-id");
-            const doctorSchedules = getCookie("doctorAppointments")[doctorID];
-            console.log(doctorSchedules);
+            const schedules = doctorSchedules[doctorID];
         
-            for(let i = 0; i < doctorSchedules.length; i++) {
+            for(let i = 0; i < schedules.length; i++) {
                 let appointmentCard = document.createElement("div");
                 appointmentCard.className = "appointment-card";
                 let appointmentCardHTML = `
-                    <h3><span style="color: red">WHEN: </span>${doctorSchedules[i].date}</h3>`;
+                    <h3><span style="color: red">WHEN: </span>${schedules[i].date}</h3>`;
 
-                if(doctorSchedules[i].is_available === "1"){
+                if(schedules[i].is_available === "1"){
                     appointmentCardHTML += `<button data-book-appointment class="btn btn-success">Book</button>`;
                 }else{
                     appointmentCardHTML += `<div style="unavailable">
@@ -523,7 +587,7 @@ const processShowAppointments = (buttonArray) => {
                     let appointmentDetails = {
                         patient_id: currentUser.user_id,
                         doctor_id: doctorID,
-                        schedule_id: doctorSchedules[i].schedule_id
+                        schedule_id: schedules[i].schedule_id
                     };
 
                     const res = await postDataToServer("users/book_appointment.php", {...appointmentDetails});
@@ -537,3 +601,13 @@ const processShowAppointments = (buttonArray) => {
         });
     });
 }
+
+const processViewUserDetails = (buttonArray, appointmentRequests) => {
+    buttonArray.forEach((button) => {
+        button.addEventListener("click", () => {
+            const appointmentIndex = button.getAttribute("data-request-index");
+            const appointmentRequest = appointmentRequests[appointmentIndex];
+            console.log(appointmentRequest);
+        });
+    });
+};
