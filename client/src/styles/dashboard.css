@@ -191,3 +191,13 @@ p {
 .btn-icon:hover {
   cursor: pointer;
 }
+
+/* Adding gap between rows */
+#user-details-wrapper tbody tr td {
+  padding-bottom: 20px; /* Adjust the gap between rows as needed */
+}
+
+/* Aligning text content to the left */
+#user-details-wrapper tbody tr td p {
+  text-align: left;
+}

@@ -1,4 +1,4 @@
-import { postDataToServer, getDataFromServer, numberToMonth } from "./essentials.js";
+import { postDataToServer, getDataFromServer, dateFormatToString } from "./essentials.js";
 import { setCookie, getCookie, deleteCookie  } from "./cookieHandler.js";
 
 document.addEventListener("DOMContentLoaded", async () => {
@@ -206,15 +206,12 @@ document.addEventListener("DOMContentLoaded", async () => {
 
         console.log(schedules.length);
         for(let i = 0; i < schedules.length; i++){
-            const date = schedules[i].date;
-            const nums = date.split("-");
-            const year = nums[0];
-            const month = numberToMonth(nums[1]);
-            const day = nums[2];
+            const date = schedules[i].date; 
+            const dateString = dateFormatToString(date);
 
             leftPaneHTML += `
                 <tr>
-                    <th scope="row">${month} ${day}, ${year}</th>
+                    <th scope="row">${dateString}</th>
                     <td><i class="fa-solid fa-file-pen fa-xl btn-icon" style="color: green" data-edit-schedule data-schedule-id="${schedules[i].schedule_id}" title="Edit"></i></td>
                     <td><i class="fa-solid fa-xmark fa-xl btn-icon" style="color: red" data-cancel-schedule data-schedule-id="${schedules[i].schedule_id}" title="Cancel"></i></td>
                 </tr>
@@ -603,11 +600,24 @@ const processShowAppointments = (buttonArray, doctorSchedules) => {
 }
 
 const processViewUserDetails = (buttonArray, appointmentRequests) => {
+    const userDetailsWrapper = document.getElementById("user-details-wrapper");
+
+    const detailNodes = userDetailsWrapper.querySelectorAll("p");
+    //0 - name, 1 - email, 2 - gender, 3 - birthday
+
+
     buttonArray.forEach((button) => {
         button.addEventListener("click", () => {
             const appointmentIndex = button.getAttribute("data-request-index");
             const appointmentRequest = appointmentRequests[appointmentIndex];
             console.log(appointmentRequest);
+
+            detailNodes[0].textContent = `${appointmentRequest.name}`;
+            detailNodes[1].textContent = `${appointmentRequest.email}`;
+            detailNodes[2].textContent = `${appointmentRequest.gender}`;
+            detailNodes[3].textContent = `${dateFormatToString(appointmentRequest.birthdate)}`;
+
+            $("#view-details-modal").modal("show");
         });
     });
 };

@@ -123,7 +123,7 @@
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title" id="schedule-modify-title"></h5>
-          <button type="button" class="btn btn-danger" data-dismiss="modal" aria-label="Close">
+          <button data-close-modal-button type="button" class="btn btn-danger" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
@@ -136,7 +136,85 @@
           </div>
         </div>
         <div class="modal-footer">
-          <button id="schedule-modify-button" type="button" class="btn"></button>
+          <button data-close-modal-button id="schedule-modify-button" type="button" class="btn"></button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- view user details modal -->
+  <div class="modal fade" id="view-details-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 id="view-details-title" class="modal-title">User Details</h5>
+          <button type="button" class="btn btn-primary" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div style="display: flex; flex-direction: column; align-items: center; justify-content: center"
+          class="modal-body">
+          <table id="user-details-wrapper" class="table-borderless custom-table">
+            <tbody>
+              <tr>
+                <td><i class="fa-solid fa-file-signature fa-xl btn-icon" style="color: blue"></i></td>
+                <td>
+                  <p></p>
+                </td>
+              </tr>
+              <tr>
+                <td><i class="fa-solid fa-envelope fa-xl btn-icon" style="color: blue"></i></td>
+                <td>
+                  <p></p>
+                </td>
+              </tr>
+              <tr>
+                <td><i class="fa-solid fa-venus-mars fa-xl btn-icon" style="color: blue"></i></td>
+                <td>
+                  <p></p>
+                </td>
+              </tr>
+              <tr>
+                <td><i class="fa-solid fa-cake-candles fa-xl btn-icon" style="color: blue"></i></td>
+                <td>
+                  <p></p>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- <div id="user-details-wrapper" style="border: solid black 1px; height: 100%; width: 100%; display: flex; flex-direction: column; 
+            gap: 20px; justify-content: center; align-items: space-evenly">
+            <div style="flex: 1; width: 100%">
+              <div style="width: 10%"><i class="fa-solid fa-file-signature fa-xl btn-icon" style="color: blue"></i>
+              </div>
+              <div>
+                <p></p>
+              </div>
+            </div>
+            <div style="flex: 1; width: 100%">
+              <div style="width: 10%"><i class="fa-solid fa-envelope fa-xl btn-icon" style="color: blue"></i></div>
+              <div style="width: 90%">
+                <p></p>
+              </div>
+            </div>
+            <div style="flex: 1; width: 100%">
+              <div style="width: 10%"><i class="fa-solid fa-venus-mars fa-xl btn-icon" style="color: blue"></i></div>
+              <div style="width: 90%">
+                <p></p>
+              </div>
+            </div>
+            <div style="flex: 1; width: 100%">
+              <div style="width: 10%"><i class="fa-solid fa-cake-candles fa-xl btn-icon" style="color: blue"></i></div>
+              <div style="width: 90%">
+                <p></p>
+              </div>
+            </div>
+          </div> -->
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline-primary" data-dismiss="modal">Done</button>
         </div>
       </div>
     </div>

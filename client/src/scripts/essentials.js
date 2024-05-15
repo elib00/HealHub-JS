@@ -22,7 +22,7 @@ export const getDataFromServer = async (pathString) => {
     }
 };
 
-export const numberToMonth = (number) => {
+export const dateFormatToString = (date) => {
     const months = {
         "01": "January",
         "02": "February",
@@ -38,5 +38,10 @@ export const numberToMonth = (number) => {
         "12": "December"
     }
 
-    return months[number];
+    const nums = date.split("-");
+    const year = nums[0];
+    const month = months[nums[1]];
+    const day = nums[2];
+
+    return `${month} ${day}, ${year} `
 };
