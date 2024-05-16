@@ -193,11 +193,11 @@ p {
 }
 
 /* Adding gap between rows */
-#user-details-wrapper tbody tr td {
+#user-details-table tbody tr td {
   padding-bottom: 20px; /* Adjust the gap between rows as needed */
 }
 
 /* Aligning text content to the left */
-#user-details-wrapper tbody tr td p {
+#user-details-table tbody tr td p {
   text-align: left;
 }

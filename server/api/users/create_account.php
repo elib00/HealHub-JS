@@ -44,7 +44,6 @@ if($method === "POST"){
         echo json_encode(array("success" => false, "message" => "Username already in use"));
         die();
     }
-
  
     $query = "INSERT INTO tbluserprofile (firstname, lastname, gender, birthdate) VALUES ('$firstname', '$lastname', '$gender', '$birthdate')";
  

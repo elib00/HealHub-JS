@@ -86,9 +86,6 @@
         <div class="modal-body">
           <p id="status-message" style="display: inline-block; margin: 0; color: black"></p>
         </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-outline-danger" data-dismiss="modal">Close</button>
-        </div>
       </div>
     </div>
   </div>
@@ -106,7 +103,6 @@
         </div>
         <div style="display: flex; flex-direction: column; align-items: center; justify-content: center"
           class="modal-body" id="appointments-body">
-
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-outline-danger" data-dismiss="modal">Close</button>
@@ -155,7 +151,7 @@
         </div>
         <div style="display: flex; flex-direction: column; align-items: center; justify-content: center"
           class="modal-body">
-          <table id="user-details-wrapper" class="table-borderless custom-table">
+          <table id="user-details-table" class="table-borderless custom-table">
             <tbody>
               <tr>
                 <td><i class="fa-solid fa-file-signature fa-xl btn-icon" style="color: blue"></i></td>
@@ -184,41 +180,64 @@
             </tbody>
           </table>
         </div>
-
-        <!-- <div id="user-details-wrapper" style="border: solid black 1px; height: 100%; width: 100%; display: flex; flex-direction: column; 
-            gap: 20px; justify-content: center; align-items: space-evenly">
-            <div style="flex: 1; width: 100%">
-              <div style="width: 10%"><i class="fa-solid fa-file-signature fa-xl btn-icon" style="color: blue"></i>
-              </div>
-              <div>
-                <p></p>
-              </div>
-            </div>
-            <div style="flex: 1; width: 100%">
-              <div style="width: 10%"><i class="fa-solid fa-envelope fa-xl btn-icon" style="color: blue"></i></div>
-              <div style="width: 90%">
-                <p></p>
-              </div>
-            </div>
-            <div style="flex: 1; width: 100%">
-              <div style="width: 10%"><i class="fa-solid fa-venus-mars fa-xl btn-icon" style="color: blue"></i></div>
-              <div style="width: 90%">
-                <p></p>
-              </div>
-            </div>
-            <div style="flex: 1; width: 100%">
-              <div style="width: 10%"><i class="fa-solid fa-cake-candles fa-xl btn-icon" style="color: blue"></i></div>
-              <div style="width: 90%">
-                <p></p>
-              </div>
-            </div>
-          </div> -->
         <div class="modal-footer">
           <button type="button" class="btn btn-outline-primary" data-dismiss="modal">Done</button>
         </div>
       </div>
     </div>
   </div>
+
+  <!-- appointment request modal -->
+  <div class="modal fade" id="appointment-request-modal" tabindex="-1" role="dialog"
+    aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="appointment-request-title"></h5>
+          <button data-close-modal-button type="button" class="btn" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="form-group">
+            <p id="appointment-request-message"></p>
+            <small id="schedule-modify-small" class="form-text text-muted"></small>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button data-close-modal-button id="appointment-request-button" type="button" class="btn"></button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- open schedule modal -->
+  <div class="modal fade" id="open-schedule-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="open-schedule-title"></h5>
+          <button data-close-modal-button type="button" class="btn btn-success" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="form-group"
+            style="display: flex; flex-direction: column; align-items: center; justify-content: center">
+            <p id="open-schedule-message"></p>
+            <p id="open-schedule-date" style="font-weight: 500; font-size: 2rem"></p>
+            <small id="schedule-modify-small" class="form-text text-muted"></small>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button id="open-schedule-button" type="button" class="btn btn-outline-success">Proceed</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
 
 
   <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"

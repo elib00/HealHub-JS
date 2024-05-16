@@ -271,7 +271,13 @@ document.addEventListener("DOMContentLoaded", async () => {
                     <h2>Doctor ${doctorData.doctor_name}</h2>
                     <h3>${doctorData.doctor_specialization}</h3>
                 </div>
-                <div style="width: 100%; flex: 1; border: solid black 1px"></div>
+                <div style="display: flex; flex-direction: column; justify-content: center; gap: 20px;
+                    align-items: center; width: 100%; flex: 1; border: solid black 1px">
+                    <div class="mb-3">
+                        <input id="schedule-input" type="date" class="form-control">
+                    </div>
+                    <button id="open-schedule-button" class="btn btn-success">Open Schedule</button>
+                </div>
             </div>
         `;
 
@@ -286,11 +292,15 @@ document.addEventListener("DOMContentLoaded", async () => {
         const viewUserDetailsButtons = document.querySelectorAll("[data-view-user-details]");
         const acceptAppointmentRequestButtons = document.querySelectorAll("[data-accept-request]");
         const rejectAppointmentRequestButtons = document.querySelectorAll("[data-reject-request]");
+        const openScheduleButton = document.getElementById("open-schedule-button");
         
 
         processScheduleUpdate(editScheduleButtons, "edit");
         processScheduleUpdate(cancelScheduleButtons, "cancel");
         processViewUserDetails(viewUserDetailsButtons, [...appointmentRequests]);
+        processAppointmentRequest(acceptAppointmentRequestButtons, "accept");
+        processAppointmentRequest(rejectAppointmentRequestButtons, "reject");
+        processOpenSchedule(openScheduleButton);
     };
 
     const generateDoctorPage = async (userData, doctorData, doctorAppointments, doctorSchedules) => {
@@ -600,9 +610,9 @@ const processShowAppointments = (buttonArray, doctorSchedules) => {
 }
 
 const processViewUserDetails = (buttonArray, appointmentRequests) => {
-    const userDetailsWrapper = document.getElementById("user-details-wrapper");
+    const userDetailsTable = document.getElementById("user-details-table");
 
-    const detailNodes = userDetailsWrapper.querySelectorAll("p");
+    const detailNodes = userDetailsTable.querySelectorAll("p");
     //0 - name, 1 - email, 2 - gender, 3 - birthday
 
 
@@ -618,6 +628,104 @@ const processViewUserDetails = (buttonArray, appointmentRequests) => {
             detailNodes[3].textContent = `${dateFormatToString(appointmentRequest.birthdate)}`;
 
             $("#view-details-modal").modal("show");
+        });
+    });
+};
+
+const processAppointmentRequest = (buttonArray, type) => {
+    const appointmentRequestTitle = document.getElementById("appointment-request-title");
+    const appointmentRequestMessage = document.getElementById("appointment-request-message");
+    const appointmentRequestButton = document.getElementById("appointment-request-button");
+    const closeModalButton = document.getElementById("appointment-request-modal").querySelector("[data-close-modal-button]");
+
+    //message modal
+    const statusTitle = document.getElementById("status-title");
+    const statusMessage = document.getElementById("status-message");
+
+    buttonArray.forEach((button) => {
+        button.addEventListener("click", async () => {
+            let result = null;
+            const requestID = button.getAttribute("data-request-id");
+            if(type === "accept"){
+                appointmentRequestTitle.textContent = "Approve Appointment Request";
+                appointmentRequestTitle.style.color = "green";
+                appointmentRequestMessage.textContent = "Do you want to approve the appointment request of this user?";
+                appointmentRequestButton.textContent = "Approve";
+                appointmentRequestButton.classList.add("btn-outline-success");
+                appointmentRequestButton.classList.remove("btn-outline-danger")
+                closeModalButton.classList.add("btn-success");
+                closeModalButton.classList.remove("btn-danger");
+                $("#appointment-request-modal").modal("show");
+
+                appointmentRequestButton.addEventListener("click", async () => {
+                    result = await postDataToServer( "users/process_appointment_request.php", {
+                        request_id: requestID,
+                        type: "accept"
+                    });
+
+                    statusTitle.textContent = "SUCCESS";
+                    statusTitle.style.color = "green";
+                    statusMessage.textContent = "Appointment request has been approved!";
+
+                    $("#appointment-request-modal").modal("hide");
+                    $("#status-modal").modal("show");
+
+                    setTimeout(() => {
+                        window.location.replace("dashboard.html");
+                    }, 2000);
+                });
+            }else if(type === "reject"){
+                appointmentRequestTitle.textContent = "Reject Appointment Request";
+                appointmentRequestMessage.textContent = "Do you want to reject the appointment request of this user?";
+                appointmentRequestButton.textContent = "Reject";
+                appointmentRequestButton.classList.add("btn-outline-danger");
+                appointmentRequestButton.classList.remove("btn-outline-success");
+                closeModalButton.classList.add("btn-danger");
+                closeModalButton.classList.remove("btn-success");
+                $("#appointment-request-modal").modal("show");
+
+                appointmentRequestButton.addEventListener("click", async () => {
+                    result = await postDataToServer("users/process_appointment_request.php", {
+                        request_id: requestID,
+                        type: "reject"
+                    });
+
+                    statusTitle.textContent = "ALL DONE";
+                    statusTitle.style.color = "red";
+                    statusMessage.textContent = "Appointment request has been rejected.";
+
+                    $("#appointment-request-modal").modal("hide");
+                    $("#status-modal").modal("show");
+
+                    setTimeout(() => {
+                        window.location.replace("dashboard.html");
+                    }, 2000);
+                });
+            }
+
+            console.log(result); 
+        });
+    });
+};
+
+const processOpenSchedule = (button) => {
+    const openScheduleTitle = document.getElementById("open-schedule-title");
+    const openScheduleMessage = document.getElementById("open-schedule-message");
+    const openScheduleDate = document.getElementById("open-schedule-date");
+    const openScheduleButton = document.getElementById("open-schedule-buton");
+
+    const scheduleInput = document.getElementById("schedule-input");
+    console.log(scheduleInput);
+
+    button.addEventListener("click", () => {
+        openScheduleTitle.textContent = "OPEN SCHEDULE";
+        openScheduleTitle.style.color = "green";
+        openScheduleMessage.textContent = `Open schedule for this date?`;  
+        openScheduleDate.textContent = dateFormatToString(scheduleInput.value);
+        $("#open-schedule-modal").modal("show");
+
+        openScheduleButton.addEventListener("click", () => {
+            const result = postDataToServer()
         });
     });
 };

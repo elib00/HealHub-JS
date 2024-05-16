@@ -43,5 +43,5 @@ export const dateFormatToString = (date) => {
     const month = months[nums[1]];
     const day = nums[2];
 
-    return `${month} ${day}, ${year} `
+    return `${month} ${day}, ${year}`;
 };
