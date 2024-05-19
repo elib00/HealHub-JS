@@ -9,11 +9,20 @@ if($method === "POST"){
     $doctorID = $doctorData["doctor_id"];
 
     $getDoctorAppointmentsQuery = "SELECT 
-                                    appointment_id, patient_id, schedule_id " .
-                                  "FROM 
-                                    tblappointment " .    
-                                  "WHERE
-                                    doctor_id = '$doctorID'";
+                                    appointment_id, patient_id, appointment.schedule_id, ua.email AS patient_email, 
+                                    CONCAT(up.firstname, ' ', up.lastname) AS patient_name, 
+                                    up.gender AS patient_gender, up.birthdate AS patient_birthday, 
+                                    sched.date AS scheduled_date
+                                  FROM 
+                                    tblappointment appointment
+                                  JOIN 
+                                    tbluseraccount ua ON ua.account_id = patient_id
+                                  JOIN
+                                    tbluserprofile up ON up.user_id = ua.user_id
+                                  JOIN 
+                                    tblschedule sched ON sched.schedule_id = appointment.schedule_id
+                                  WHERE
+                                    appointment.doctor_id = '$doctorID'";
 
     $result = mysqli_query($connection, $getDoctorAppointmentsQuery);
     if($result === false){
@@ -25,7 +34,7 @@ if($method === "POST"){
 
     $appointments = [];
 
-    while($row = mysqli_fetch_array($result)){
+    while($row = mysqli_fetch_assoc($result)){
         $appointments[] = $row;
     }
 

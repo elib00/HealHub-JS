@@ -79,7 +79,7 @@
       <div class="modal-content">
         <div class="modal-header">
           <h5 id="status-title" class="modal-title"></h5>
-          <button type="button" class="btn btn-danger" data-dismiss="modal" aria-label="Close">
+          <button data-close-modal type="button" class="btn btn-danger" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
@@ -97,7 +97,7 @@
       <div class="modal-content">
         <div class="modal-header">
           <h5 id="status-title" class="modal-title">Schedules</h5>
-          <button type="button" class="btn btn-danger" data-dismiss="modal" aria-label="Close">
+          <button data-close-modal type="button" class="btn btn-danger" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
@@ -119,7 +119,7 @@
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title" id="schedule-modify-title"></h5>
-          <button data-close-modal-button type="button" class="btn btn-danger" data-dismiss="modal" aria-label="Close">
+          <button data-close-modal type="button" class="btn" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
@@ -227,11 +227,11 @@
             style="display: flex; flex-direction: column; align-items: center; justify-content: center">
             <p id="open-schedule-message"></p>
             <p id="open-schedule-date" style="font-weight: 500; font-size: 2rem"></p>
-            <small id="schedule-modify-small" class="form-text text-muted"></small>
+            <small class="form-text text-muted"></small>
           </div>
         </div>
         <div class="modal-footer">
-          <button id="open-schedule-button" type="button" class="btn btn-outline-success">Proceed</button>
+          <button id="set-schedule-button" class="btn btn-outline-success">Proceed</button>
         </div>
       </div>
     </div>

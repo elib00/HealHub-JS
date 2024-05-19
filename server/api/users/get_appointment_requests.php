@@ -5,8 +5,8 @@ include_once("../../includes/cors.php");
 $method = $_SERVER["REQUEST_METHOD"];
  
 if($method === "POST"){
-    $userData = json_decode(file_get_contents('php://input'), true);
-    $doctorID = $userData["doctor_id"];
+    $doctorData = json_decode(file_get_contents('php://input'), true);
+    $doctorID = $doctorData["doctor_id"];
 
         $getDoctorAppointmentRequestsQuery = "SELECT
                                                 request_id, ar.account_id, 

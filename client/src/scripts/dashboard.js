@@ -21,43 +21,12 @@ document.addEventListener("DOMContentLoaded", async () => {
     const handleDoctorDashboard = async (userData) => {
         const res = await postDataToServer("users/get_current_doctor.php", {...userData});
         const currentDoctor = res.doctor;
-
-        const appointments = await postDataToServer("users/get_doctor_appointments.php", {
-            doctor_id: currentDoctor.doctor_id
-        });
+        setCookie("currentDoctor", currentDoctor); 
 
         const doctorSchedules = await postDataToServer("users/get_schedules.php", {...userData});
         const appointmentRequests = await postDataToServer("users/get_appointment_requests.php", {...currentDoctor});
-        await generateDoctorPage2({...userData}, {...currentDoctor}, appointments.appointments, doctorSchedules.schedules, appointmentRequests.appointment_requests);
-
-        // const setScheduleBtn = document.getElementById("set-schedule-button");
-
-        // const statusTitle = document.getElementById("status-title");
-        // const statusMessage = document.getElementById("status-message");    
-
-        // setScheduleBtn.addEventListener("click", async (event) => {
-        //     event.preventDefault();
-        //     const schedule = document.getElementById("schedule-date").value;
-        //     console.log(schedule);
-
-        //     const data = {
-        //         account_id: userData.account_id,
-        //         date: schedule,
-        //     }
-
-        //     console.log(data);
-        //     const result = await postDataToServer("users/set_schedule.php", {...data});
-        //     console.log(result);
-
-        //     statusMessage.textContent = "Schedule created successfully.";
-        //     statusTitle.textContent = "SCHEDULE CREATED";
-        //     statusMessage.style.color = "green";
-        //     $("#status-modal").modal("show");
-            
-        //     setTimeout(() => {
-        //         window.location.replace("dashboard.html");
-        //     }, 2000);
-        // });
+        console.log(appointmentRequests);
+        await generateDoctorPage2({...userData}, {...currentDoctor}, [...doctorSchedules.schedules], [...appointmentRequests.appointment_requests]);
     };
     
     const handleAdminDashboard = async (userData) => {
@@ -182,8 +151,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         processDoctorRequest(rejectButtons, "reject");
     };
 
-    const generateDoctorPage2 = async (userData, doctorData, doctorAppointments, schedules, appointmentRequests) => {
-
+    const generateDoctorPage2 = async (userData, doctorData, schedules, appointmentRequests) => {
         const contentContainer = document.getElementById("content-container");
 
         const leftPane = document.createElement("div");
@@ -193,8 +161,16 @@ document.addEventListener("DOMContentLoaded", async () => {
         let leftPaneHTML = `
             <div style="width: 100%; height: 100%; display: flex; flex-direction: column; align-items: center; 
                 box-sizing: border-box; gap: 10px">
-                <div id="doctor-name-wrapper" style="background-color: blue;">
-                    <h2 style="margin-left: 10px; color: white">Hello, Doctor ${doctorData.doctor_name}</h2>
+                <div id="doctor-name-wrapper" style="background-color: blue">
+                    <h2 style="color: white; margin-left: 20px; margin-right: 20px">Hello, Doctor ${doctorData.doctor_name}</h2>`;
+
+                    if(doctorData.doctor_gender == "Male"){
+                        leftPaneHTML += `<i class="fa-solid fa-mars fa-xl" style="color: green"></i>`;
+                    }else{
+                        leftPaneHTML += `<i class="fa-solid fa-venus fa-xl" style="color: red"></i>`;
+                    }
+
+                    leftPaneHTML += `<button id="view-appointments-button" class="btn btn-primary" style="margin-left: auto; margin-right: 20px">View Appointments</button>
                 </div>
                 <div style="display: flex; height: calc(100% - 80px); width: 100%; gap: 1rem; box-sizing: border-box">
                     <div id="schedule-wrapper">
@@ -204,7 +180,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                                 <tbody>
         `;
 
-        console.log(schedules.length);
+        // console.log(schedules.length);
         for(let i = 0; i < schedules.length; i++){
             const date = schedules[i].date; 
             const dateString = dateFormatToString(date);
@@ -293,6 +269,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         const acceptAppointmentRequestButtons = document.querySelectorAll("[data-accept-request]");
         const rejectAppointmentRequestButtons = document.querySelectorAll("[data-reject-request]");
         const openScheduleButton = document.getElementById("open-schedule-button");
+        const viewAppointmentsButton = document.getElementById("view-appointments-button");
         
 
         processScheduleUpdate(editScheduleButtons, "edit");
@@ -300,7 +277,8 @@ document.addEventListener("DOMContentLoaded", async () => {
         processViewUserDetails(viewUserDetailsButtons, [...appointmentRequests]);
         processAppointmentRequest(acceptAppointmentRequestButtons, "accept");
         processAppointmentRequest(rejectAppointmentRequestButtons, "reject");
-        processOpenSchedule(openScheduleButton);
+        processOpenSchedule(openScheduleButton, userData.account_id);
+        processViewAppointments(viewAppointmentsButton);
     };
 
     const generateDoctorPage = async (userData, doctorData, doctorAppointments, doctorSchedules) => {
@@ -399,7 +377,6 @@ document.addEventListener("DOMContentLoaded", async () => {
         deleteCookie("rememberedUser");
     });
 
-
     //handling the case when the user has not logged in yet
     const statusTitle = document.getElementById("status-title");
     const statusMessage = document.getElementById("status-message");
@@ -483,6 +460,10 @@ const processScheduleUpdate = (buttonArray, type) => {
     const scheduleModifyTitle = document.getElementById("schedule-modify-title");
     const scheduleModifySmall = document.getElementById("schedule-modify-small");
     const scheduleModifyLabel = document.getElementById("schedule-modify-label");
+    const modifyScheduleCloseModal = document.getElementById("schedule-modify-modal").querySelector("[data-close-modal]");
+
+    //message modal
+    const statusCloseModal = document.getElementById("status-modal").querySelector("[data-close-modal]");
 
     buttonArray.forEach(button => {
         button.addEventListener("click", async (event) => {
@@ -502,27 +483,49 @@ const processScheduleUpdate = (buttonArray, type) => {
                 scheduleModifyLabel.style.display = "block";
                 scheduleModifyLabel.textContent = "New Schedule";
                 editCalendar.style.display = "block";
+
+                modifyScheduleCloseModal.classList.add("btn-success");
+                modifyScheduleCloseModal.classList.remove("btn-danger");
+
                 
                 $("#schedule-modify-modal").modal("show");
 
                 sendModifyRequestButton.addEventListener("click", async () => {
-                    scheduleData = {
-                        schedule_id: scheduleID,
-                        date: editCalendar.value
+                    const date = editCalendar.value;
+
+                    if(date === ""){
+                        $("#schedule-modify-modal").modal("hide");
+                        statusTitle.textContent = "INVALID SCHEDULE DATE";
+                        statusTitle.style.color = "red";
+
+                        statusMessage.textContent = "Please enter a valid new schedule date.";
+
+                        statusCloseModal.classList.add("btn-danger");
+                        statusCloseModal.classList.remove("btn-success");
+
+                        $("#status-modal").modal("show");
+                    }else{
+                        scheduleData = {
+                            schedule_id: scheduleID,
+                            date: date
+                        }
+    
+                        result = await postDataToServer("users/edit_schedule.php", {...scheduleData});
+                        $("#schedule-modify-modal").modal("hide");
+                        console.log(result);
+                        statusMessage.textContent = "Schedule updated successfully.";
+                        statusTitle.textContent = "UPDATE SCHEDULE";
+                        statusTitle.style.color = "green";
+    
+                        statusCloseModal.classList.add("btn-success");
+                        statusCloseModal.classList.remove("btn-danger");
+    
+                        $("#status-modal").modal("show");
+                        console.log(result);
+                        setTimeout(() => {
+                            window.location.replace("dashboard.html");
+                        }, 2000);   
                     }
-
-                    result = await postDataToServer("users/edit_schedule.php", {...scheduleData});
-                    $("#schedule-modify-modal").modal("hide");
-                    console.log(result);
-                    statusMessage.textContent = "Schedule updated successfully.";
-                    statusTitle.textContent = "UPDATE SCHEDULE";
-                    statusMessage.style.color = "green";
-
-                    $("#status-modal").modal("show");
-                    console.log(result);
-                    setTimeout(() => {
-                        window.location.replace("dashboard.html");
-                    }, 2000);
                 });
             }else{                
                 sendModifyRequestButton.classList.remove("btn-success");
@@ -532,7 +535,9 @@ const processScheduleUpdate = (buttonArray, type) => {
                 scheduleModifySmall.textContent = "That' okay! We can't control unforeseen events in our life";
                 scheduleModifyLabel.style.display = "none";
                 editCalendar.style.display = "none";
-                
+
+                modifyScheduleCloseModal.classList.add("btn-danger");
+                modifyScheduleCloseModal.classList.remove("btn-success");
 
                 $("#schedule-modify-modal").modal("show");
 
@@ -542,7 +547,9 @@ const processScheduleUpdate = (buttonArray, type) => {
                     statusMessage.textContent = "Schedule has been cancelled successfully.";
                     statusTitle.textContent = "CANCEL SCHEDULE";
                     statusMessage.style.color = "red";
-                    // targetElement.parentNode.remove();
+
+                    statusCloseModal.classList.add("btn-danger");
+                    statusCloseModal.classList.remove("btn-success");
 
                     $("#schedule-modify-modal").modal("hide");
                     $("#status-modal").modal("show");
@@ -572,7 +579,7 @@ const processShowAppointments = (buttonArray, doctorSchedules) => {
                 let appointmentCard = document.createElement("div");
                 appointmentCard.className = "appointment-card";
                 let appointmentCardHTML = `
-                    <h3><span style="color: red">WHEN: </span>${schedules[i].date}</h3>`;
+                    <h3><span style="color: red">WHEN: </span>${dateFormatToString(schedules[i].date)}</h3>`;
 
                 if(schedules[i].is_available === "1"){
                     appointmentCardHTML += `<button data-book-appointment class="btn btn-success">Book</button>`;
@@ -591,8 +598,9 @@ const processShowAppointments = (buttonArray, doctorSchedules) => {
 
                 bookButton.addEventListener("click", async () => {
                     const currentUser = getCookie("currentUser");
+                    console.log(currentUser);
                     let appointmentDetails = {
-                        patient_id: currentUser.user_id,
+                        account_id: currentUser.account_id,
                         doctor_id: doctorID,
                         schedule_id: schedules[i].schedule_id
                     };
@@ -636,11 +644,12 @@ const processAppointmentRequest = (buttonArray, type) => {
     const appointmentRequestTitle = document.getElementById("appointment-request-title");
     const appointmentRequestMessage = document.getElementById("appointment-request-message");
     const appointmentRequestButton = document.getElementById("appointment-request-button");
-    const closeModalButton = document.getElementById("appointment-request-modal").querySelector("[data-close-modal-button]");
+    const requestCloseModalButton = document.getElementById("appointment-request-modal").querySelector("[data-close-modal-button]");
 
     //message modal
     const statusTitle = document.getElementById("status-title");
     const statusMessage = document.getElementById("status-message");
+    const statusCloseModalButton = document.getElementById("status-modal").querySelector("[data-close-modal]");
 
     buttonArray.forEach((button) => {
         button.addEventListener("click", async () => {
@@ -653,8 +662,8 @@ const processAppointmentRequest = (buttonArray, type) => {
                 appointmentRequestButton.textContent = "Approve";
                 appointmentRequestButton.classList.add("btn-outline-success");
                 appointmentRequestButton.classList.remove("btn-outline-danger")
-                closeModalButton.classList.add("btn-success");
-                closeModalButton.classList.remove("btn-danger");
+                requestCloseModalButton.classList.add("btn-success");
+                requestCloseModalButton.classList.remove("btn-danger");
                 $("#appointment-request-modal").modal("show");
 
                 appointmentRequestButton.addEventListener("click", async () => {
@@ -667,6 +676,9 @@ const processAppointmentRequest = (buttonArray, type) => {
                     statusTitle.style.color = "green";
                     statusMessage.textContent = "Appointment request has been approved!";
 
+                    statusCloseModalButton.classList.add("btn-success");
+                    statusCloseModalButton.classList.remove("btn-danger");
+
                     $("#appointment-request-modal").modal("hide");
                     $("#status-modal").modal("show");
 
@@ -676,12 +688,13 @@ const processAppointmentRequest = (buttonArray, type) => {
                 });
             }else if(type === "reject"){
                 appointmentRequestTitle.textContent = "Reject Appointment Request";
+                appointmentRequestTitle.style.color = "red";
                 appointmentRequestMessage.textContent = "Do you want to reject the appointment request of this user?";
                 appointmentRequestButton.textContent = "Reject";
                 appointmentRequestButton.classList.add("btn-outline-danger");
                 appointmentRequestButton.classList.remove("btn-outline-success");
-                closeModalButton.classList.add("btn-danger");
-                closeModalButton.classList.remove("btn-success");
+                requestCloseModalButton.classList.add("btn-danger");
+                requestCloseModalButton.classList.remove("btn-success");
                 $("#appointment-request-modal").modal("show");
 
                 appointmentRequestButton.addEventListener("click", async () => {
@@ -694,6 +707,9 @@ const processAppointmentRequest = (buttonArray, type) => {
                     statusTitle.style.color = "red";
                     statusMessage.textContent = "Appointment request has been rejected.";
 
+                    statusCloseModalButton.classList.add("btn-danger");
+                    statusCloseModalButton.classList.remove("btn-success");
+
                     $("#appointment-request-modal").modal("hide");
                     $("#status-modal").modal("show");
 
@@ -702,30 +718,77 @@ const processAppointmentRequest = (buttonArray, type) => {
                     }, 2000);
                 });
             }
-
-            console.log(result); 
         });
     });
 };
 
-const processOpenSchedule = (button) => {
+const processOpenSchedule = (button, accountID) => {
     const openScheduleTitle = document.getElementById("open-schedule-title");
     const openScheduleMessage = document.getElementById("open-schedule-message");
     const openScheduleDate = document.getElementById("open-schedule-date");
-    const openScheduleButton = document.getElementById("open-schedule-buton");
+    const setScheduleButton = document.getElementById("set-schedule-button");
 
-    const scheduleInput = document.getElementById("schedule-input");
-    console.log(scheduleInput);
+    //message modal
+    const statusTitle = document.getElementById("status-title");
+    const statusMessage = document.getElementById("status-message");
 
     button.addEventListener("click", () => {
+        const scheduleInput = document.getElementById("schedule-input");
+        const date = scheduleInput.value;
+
         openScheduleTitle.textContent = "OPEN SCHEDULE";
         openScheduleTitle.style.color = "green";
         openScheduleMessage.textContent = `Open schedule for this date?`;  
-        openScheduleDate.textContent = dateFormatToString(scheduleInput.value);
-        $("#open-schedule-modal").modal("show");
+        openScheduleDate.textContent = dateFormatToString(date);
 
-        openScheduleButton.addEventListener("click", () => {
-            const result = postDataToServer()
+        let isValidDate = true;
+
+        if(date === ""){
+            statusTitle.textContent = "INVALID SCHEDULE";
+            statusTitle.style.color = "red";
+            statusMessage.textContent = "Please select a valid date";
+            isValidDate = false;
+            $("#status-modal").modal("show");
+        }else{
+            $("#open-schedule-modal").modal("show");
+        }
+        
+        setScheduleButton.addEventListener("click", async () => {
+            if(!isValidDate) return;
+            
+            const result = await postDataToServer("users/set_schedule.php", {
+                account_id: accountID,
+                date: date
+            });
+
+            if(result.success){
+                statusTitle.textContent = "SUCCESS";
+                statusTitle.style.color = "green";
+                statusMessage.textContent = result.message;
+                    
+                $("#open-schedule-modal").modal("hide");
+                $("#status-modal").modal("show");
+
+                setTimeout(() => {
+                    window.location.replace("dashboard.html");
+                }, 2000);
+            }else{
+                statusTitle.textContent = "ERROR"
+                statusTitle.style.color = "red";
+                statusMessage.textContent = result.message;
+                      
+                $("#open-schedule-modal").modal("hide");
+                $("#status-modal").modal("show");
+            }
+
+
         });
+    });
+};
+
+const processViewAppointments = (triggerButton, doctorData, appointments) => {
+    triggerButton.addEventListener("click", () => {
+        setCookie("doctorAppointments", appointments);
+        window.location.href = "appointments.html";
     });
 };

@@ -5,10 +5,15 @@
   padding: 0;
 }
 
+h2 {
+  margin: 0;
+}
+
 body {
   background-color: rgb(252, 252, 252);
   height: 100vh;
   width: 100vw;
+  overflow-y: hidden;
   box-sizing: border-box;
   font-family: montserrat;
 }
@@ -56,7 +61,6 @@ p {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  height: 100%;
   background-color: blanchedalmond;
   box-sizing: border-box;
 }

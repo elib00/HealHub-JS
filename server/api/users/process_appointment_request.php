@@ -59,7 +59,7 @@ if($method === "POST"){
     $response = [
         "success" => true,
         "type" => $type,
-        "message" => "Appointment processed successfully"
+        "message" => "Appointment request processed successfully"
     ];
 
     echo json_encode($response, JSON_PRETTY_PRINT);
