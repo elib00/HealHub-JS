@@ -731,6 +731,7 @@ const processOpenSchedule = (button, accountID) => {
     //message modal
     const statusTitle = document.getElementById("status-title");
     const statusMessage = document.getElementById("status-message");
+    const statusCloseModal = document.getElementById("status-modal").querySelector("[data-close-modal]");
 
     button.addEventListener("click", () => {
         const scheduleInput = document.getElementById("schedule-input");
@@ -747,6 +748,10 @@ const processOpenSchedule = (button, accountID) => {
             statusTitle.textContent = "INVALID SCHEDULE";
             statusTitle.style.color = "red";
             statusMessage.textContent = "Please select a valid date";
+
+            statusCloseModal.classList.add("btn-danger");
+            statusCloseModal.classList.remove("btn-success");
+
             isValidDate = false;
             $("#status-modal").modal("show");
         }else{
@@ -764,8 +769,11 @@ const processOpenSchedule = (button, accountID) => {
             if(result.success){
                 statusTitle.textContent = "SUCCESS";
                 statusTitle.style.color = "green";
-                statusMessage.textContent = result.message;
-                    
+                statusMessage.textContent = result.message;   
+                
+                statusCloseModal.classList.add("btn-success");
+                statusCloseModal.classList.remove("btn-danger");
+
                 $("#open-schedule-modal").modal("hide");
                 $("#status-modal").modal("show");
 
@@ -776,6 +784,9 @@ const processOpenSchedule = (button, accountID) => {
                 statusTitle.textContent = "ERROR"
                 statusTitle.style.color = "red";
                 statusMessage.textContent = result.message;
+                
+                statusCloseModal.classList.add("btn-danger");
+                statusCloseModal.classList.remove("btn-success");
                       
                 $("#open-schedule-modal").modal("hide");
                 $("#status-modal").modal("show");
