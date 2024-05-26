@@ -241,14 +241,14 @@ document.addEventListener("DOMContentLoaded", async () => {
 
         let rightPaneHTML = `
             <div id="doctor-calendar-container">
-                <div style="width: 100%; flex: 1; border: solid black 1px; gap: 10px; 
+                <div style="width: 100%; flex: 1; gap: 10px; 
                 display: flex; flex-direction: column; align-items: center; justify-content: center">
                     <img style="width: 50%; height: 50%; border: solid black 1px">
                     <h2>Doctor ${doctorData.doctor_name}</h2>
                     <h3>${doctorData.doctor_specialization}</h3>
                 </div>
                 <div style="display: flex; flex-direction: column; justify-content: center; gap: 20px;
-                    align-items: center; width: 100%; flex: 1; border: solid black 1px">
+                    align-items: center; width: 100%; flex: 1">
                     <div class="mb-3">
                         <input id="schedule-input" type="date" class="form-control">
                     </div>

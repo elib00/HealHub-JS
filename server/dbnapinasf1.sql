@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 02, 2024 at 01:49 AM
+-- Generation Time: May 26, 2024 at 11:46 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.0.30
 
@@ -39,9 +39,21 @@ CREATE TABLE `tblappointment` (
 --
 
 INSERT INTO `tblappointment` (`appointment_id`, `patient_id`, `doctor_id`, `schedule_id`) VALUES
-(5, 25, 25, 4),
-(6, 25, 25, 5),
-(7, 25, 26, 7);
+(34, 23, 25, 20),
+(35, 23, 25, 32);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `tblappointmentrequest`
+--
+
+CREATE TABLE `tblappointmentrequest` (
+  `request_id` int(11) NOT NULL,
+  `account_id` int(11) NOT NULL,
+  `doctor_id` int(11) NOT NULL,
+  `schedule_id` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -81,12 +93,17 @@ CREATE TABLE `tblschedule` (
 --
 
 INSERT INTO `tblschedule` (`schedule_id`, `doctor_id`, `date`, `is_available`) VALUES
-(4, 25, '2024-04-20', 0),
-(5, 25, '2024-04-17', 0),
-(6, 25, '2024-04-26', 1),
-(7, 26, '2024-04-27', 0),
-(8, 25, '2024-05-05', 1),
-(9, 25, '2024-06-20', 1);
+(7, 26, '2024-04-27', 1),
+(20, 25, '2024-05-30', 0),
+(23, 25, '2024-04-30', 0),
+(28, 25, '2024-05-29', 0),
+(29, 25, '2024-05-27', 1),
+(30, 25, '2024-04-12', 1),
+(31, 25, '2024-05-30', 1),
+(32, 25, '2024-05-12', 0),
+(33, 25, '2024-05-23', 1),
+(34, 25, '2024-05-21', 0),
+(35, 25, '2024-05-06', 0);
 
 -- --------------------------------------------------------
 
@@ -133,7 +150,9 @@ INSERT INTO `tbluseraccount` (`account_id`, `user_id`, `email`, `username`, `pas
 (20, 22, 'admin@gmail.com', 'admin', '$2y$10$uOwDEZdq0B9OA0xELVEQoe/mz5ZRNy4mNfwtEhkFj80L6I7JQH2ja', 2),
 (21, 23, 'test3@gmail.com', 'test3', '$2y$10$Ytbr2ZuV/7j2itVj2KNO2eKqjOTNh2895rAUp8Q7F3j5WKstYCTQW', 1),
 (22, 24, 'john@gmail.com', 'janjan', '$2y$10$SbA5C5JPUkW1aYjj.fMRI.Gre7DpJetdwTDnrZdG37ZqOryUxmRS6', 0),
-(23, 25, 'test2@gmail.com', 'test2', '$2y$10$SM0.ZMccCg.1GIjQxHwfpemcCzB79SQ7SB7Gq/uGcAL0s3njA2Mvu', 0);
+(23, 25, 'test2@gmail.com', 'test2', '$2y$10$SM0.ZMccCg.1GIjQxHwfpemcCzB79SQ7SB7Gq/uGcAL0s3njA2Mvu', 0),
+(24, 26, 'cha@gmail.com', 'cha', '$2y$10$9rC4JaoNmsuaeVwvb.zKaOUY7xxbJk8rWQiszQJI31zGa.hDrOzDa', 0),
+(25, 27, 'e@gmail.com', 'e', '$2y$10$7gHf9mqarKEpdgY9Oqhv/eKEiIzsRtsU57OQlM0REdH2JS8Uv66zG', 0);
 
 -- --------------------------------------------------------
 
@@ -167,7 +186,9 @@ INSERT INTO `tbluserprofile` (`user_id`, `firstname`, `lastname`, `gender`, `bir
 (22, 'admin', 'admin', 'Male', '2003-10-19'),
 (23, 'Test', 'Test', 'Male', '2024-04-13'),
 (24, 'John', 'Doe', 'Male', '2024-04-18'),
-(25, 'test2', 'test2', 'Male', '2024-05-01');
+(25, 'test2', 'test2', 'Male', '2024-05-01'),
+(26, 'Charish', 'Libre', 'Female', '2003-11-14'),
+(27, 'Eira', 'Nuez', 'Female', '2024-10-14');
 
 --
 -- Indexes for dumped tables
@@ -177,7 +198,14 @@ INSERT INTO `tbluserprofile` (`user_id`, `firstname`, `lastname`, `gender`, `bir
 -- Indexes for table `tblappointment`
 --
 ALTER TABLE `tblappointment`
-  ADD PRIMARY KEY (`appointment_id`);
+  ADD PRIMARY KEY (`appointment_id`),
+  ADD KEY `schedule_id` (`schedule_id`);
+
+--
+-- Indexes for table `tblappointmentrequest`
+--
+ALTER TABLE `tblappointmentrequest`
+  ADD PRIMARY KEY (`request_id`);
 
 --
 -- Indexes for table `tbldoctor`
@@ -219,7 +247,13 @@ ALTER TABLE `tbluserprofile`
 -- AUTO_INCREMENT for table `tblappointment`
 --
 ALTER TABLE `tblappointment`
-  MODIFY `appointment_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `appointment_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=38;
+
+--
+-- AUTO_INCREMENT for table `tblappointmentrequest`
+--
+ALTER TABLE `tblappointmentrequest`
+  MODIFY `request_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
 
 --
 -- AUTO_INCREMENT for table `tbldoctor`
@@ -231,7 +265,7 @@ ALTER TABLE `tbldoctor`
 -- AUTO_INCREMENT for table `tblschedule`
 --
 ALTER TABLE `tblschedule`
-  MODIFY `schedule_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `schedule_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=36;
 
 --
 -- AUTO_INCREMENT for table `tblupgraderequest`
@@ -243,17 +277,23 @@ ALTER TABLE `tblupgraderequest`
 -- AUTO_INCREMENT for table `tbluseraccount`
 --
 ALTER TABLE `tbluseraccount`
-  MODIFY `account_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
+  MODIFY `account_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
 
 --
 -- AUTO_INCREMENT for table `tbluserprofile`
 --
 ALTER TABLE `tbluserprofile`
-  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
+  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
 
 --
 -- Constraints for dumped tables
 --
+
+--
+-- Constraints for table `tblappointment`
+--
+ALTER TABLE `tblappointment`
+  ADD CONSTRAINT `tblappointment_ibfk_1` FOREIGN KEY (`schedule_id`) REFERENCES `tblschedule` (`schedule_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `tbldoctor`

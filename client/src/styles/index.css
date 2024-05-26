@@ -119,15 +119,13 @@ li a {
   color: #201550;
   font-size: 1.5rem;
   display: flex;
-  width: 100%;
+  width: fit-content;
   height: 50%;
 }
 
 .header-text {
   font-weight: bold;
   /* background-color: orange; */
-  margin-left: 10%;
-  margin-top: 6%;
   display: flex;
   color: #201550;
   font-size: 2.5rem;
@@ -203,4 +201,22 @@ p.header-lowtext {
   width: auto;
 }
 
-/*for the borderless tables*/
+.page-contents-container {
+  height: 120%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  /* background-color: blue; */
+}
+
+.header-container-report {
+  background-color: #fef4ee;
+  color: #201550;
+  font-size: 1.5rem;
+  width: 100%;
+  height: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
