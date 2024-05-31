@@ -257,9 +257,16 @@ document.addEventListener("DOMContentLoaded", async () => {
         let rightPaneHTML = `
             <div id="doctor-calendar-container">
                 <div style="width: 100%; flex: 1; gap: 10px; 
-                display: flex; flex-direction: column; align-items: center; justify-content: center">
-                    <img style="width: 50%; height: 50%; border: solid black 1px">
-                    <h2>Doctor ${doctorData.doctor_name}</h2>
+                display: flex; flex-direction: column; align-items: center; justify-content: center">`
+
+                if(doctorData.doctor_gender === "Male"){
+                   rightPaneHTML += `<img style="width: 50%; height: 50%" src="../images/doctor_male.png">`;
+                }else{
+                    rightPaneHTML += `<img style="width: 50%; height: 50%" src="../images/doctor_female.png">`;
+                }
+                
+                    
+                rightPaneHTML += `<h2>Doctor ${doctorData.doctor_name}</h2>
                     <h3>${doctorData.doctor_specialization}</h3>
                 </div>
                 <div style="display: flex; flex-direction: column; justify-content: center; gap: 20px;
