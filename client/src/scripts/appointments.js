@@ -3,8 +3,8 @@ import { getCookie } from "./cookieHandler.js";
 
 
 document.addEventListener("DOMContentLoaded", () => {
-    const generateAppointmentsTable = async () => {
-        const doctorAppointmentsTable = document.getElementById("doctor-appointments-table");
+    const generateDoctorAppointmentsTable = async () => {
+        const doctorAppointmentsTable = document.getElementById("appointments-table");
         const currentDoctor = getCookie("currentDoctor");
         const result = await postDataToServer("users/get_doctor_appointments.php", {
             doctor_id: currentDoctor.doctor_id
@@ -63,8 +63,67 @@ document.addEventListener("DOMContentLoaded", () => {
         processAppointment(processAppointmentButtons);
     };
 
+    const generateUserAppointmentsTable = async () => {
+        const userAppointmentsTable = document.getElementById("appointments-table");
+        const currentUser = getCookie("currentUser");
+        console.log(currentUser);
+        const result = await postDataToServer("users/get_user_appointments.php", {
+            account_id: currentUser.account_id
+        });
 
-    generateAppointmentsTable();
+        const appointments = result.appointments;
+            
+        let tableHTML = `
+            <thead>
+                <tr>
+                    <th scope="col">Appointment Date</th>
+                    <th scope="col">Doctor ID</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Email</th>
+                    <th scope="col">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+        `;
+
+        for(let i = 0; i < appointments.length; i++){
+            tableHTML += `
+                <tr>
+                    <td>
+                        <p>${dateFormatToString(appointments[i].scheduled_date)} 
+                        <i class="fa-solid fa-pen-to-square fa-xl btn-icon" 
+                            style="color: green; margin-left: 1rem"
+                            data-edit-appointment
+                            data-schedule-id="${appointments[i].schedule_id}"></i></p>
+                    </td>
+                    <td>${appointments[i].doctor_id}</td>
+                    <td>${appointments[i].doctor_name}</td>
+                    <td>${appointments[i].doctor_email}</td>
+                    <td>
+                        <button class="btn btn-danger" data-process-appointment="cancel" data-schedule-id="${appointments[i].schedule_id}">Cancel</button>
+                    </td>
+                </tr>
+            `;
+        }
+
+        tableHTML += `
+            </tbody>
+        `;
+
+        userAppointmentsTable.innerHTML = tableHTML;
+
+        const editAppointmentButtons = userAppointmentsTable.querySelectorAll("[data-edit-appointment]");
+        const processAppointmentButtons = userAppointmentsTable.querySelectorAll("[data-process-appointment]");
+        
+        editAppointment(editAppointmentButtons);
+        processAppointment(processAppointmentButtons);
+    };
+
+
+    const userType = getCookie("currentUser").user_type;
+
+    userType === "1" ? generateDoctorAppointmentsTable() : generateUserAppointmentsTable();
+
     const returnDashboardButton = document.getElementById("return-dashboard-button");
     
     returnDashboardButton.addEventListener("click", () => {

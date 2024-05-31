@@ -41,9 +41,19 @@ document.addEventListener("DOMContentLoaded", async () => {
         leftPane.className = "left-pane";
 
         let leftPaneHTML = `
-            <h2>Request to be a doctor?</h2>
-            <button class="btn btn-warning btn-request" data-toggle="modal"
-            data-target="#doctor-request-modal">Request</button>
+            <div style="display: flex; flex-direction: column; height: 100%; width: 100%;">
+                <div style="height: 20%; width: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center">
+                    <h2>Hello, ${getCookie("currentUser").firstname + " " + getCookie("currentUser").lastname}</h2>
+                    <h2>, ${getCookie("currentUser").firstname + " " + getCookie("currentUser").lastname}</h2>
+                </div>
+                <div style="height: 80%; width: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center">
+                    <h2 style="padding: 10px">Request to be a doctor?</h2>
+                    <button class="btn btn-warning btn-request" data-toggle="modal"
+                    data-target="#doctor-request-modal">Request</button>
+                    <h2 style="margin-top: 20px; padding: 10px">View your appointments</h2>
+                    <button class="btn btn-success" id="view-user-appointments">View</button>
+                </div>
+            <div>
         `;
 
                 //create the left pane
@@ -82,6 +92,11 @@ document.addEventListener("DOMContentLoaded", async () => {
         contentContainer.appendChild(rightPane);
         const openAppointmentsButtons = document.querySelectorAll("[data-open-appointments]");
         processShowAppointments(openAppointmentsButtons, doctorSchedules);
+
+        const viewUserAppointmentsButton = document.getElementById("view-user-appointments");
+        viewUserAppointmentsButton.addEventListener("click", () => {
+            window.location.href = "appointments.html";
+        });
     }
 
     const generateAdminPage = async () => {
@@ -165,7 +180,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                     <h2 style="color: white; margin-left: 20px; margin-right: 20px">Hello, Doctor ${doctorData.doctor_name}</h2>`;
 
                     if(doctorData.doctor_gender == "Male"){
-                        leftPaneHTML += `<i class="fa-solid fa-mars fa-xl" style="color: green"></i>`;
+                        leftPaneHTML += `<i class="fa-solid fa-mars fa-xl" style="color: white"></i>`;
                     }else{
                         leftPaneHTML += `<i class="fa-solid fa-venus fa-xl" style="color: red"></i>`;
                     }

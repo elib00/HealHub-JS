@@ -6,14 +6,22 @@ $method = $_SERVER["REQUEST_METHOD"];
  
 if($method === "POST"){
     $userData = json_decode(file_get_contents('php://input'), true);
-    $userID = $userData["user_id"];
+    $accountID = $userData["account_id"];
 
     $getUserAppointmentsQuery = "SELECT 
-                                    appointment_id, doctor_id, schedule_id " .
-                                  "FROM 
-                                    tblappointment " .    
-                                  "WHERE
-                                    patient_id = '$userID'";
+                                    a.appointment_id AS appointment_id, a.doctor_id AS doctor_id, a.schedule_id AS schedule_id, d.specialization AS doctor_specialization, s.date as scheduled_date,  CONCAT(up.firstname, ' ', up.lastname) AS doctor_name, ua.email AS doctor_email 
+                                  FROM 
+                                    tblappointment a
+                                  JOIN 
+                                    tbldoctor d ON d.doctor_id = a.doctor_id
+                                  JOIN
+                                    tbluseraccount ua ON ua.account_id = d.account_id
+                                  JOIN
+                                    tbluserprofile up ON up.user_id = ua.user_id
+                                  JOIN
+                                    tblschedule s ON s.schedule_id = a.schedule_id
+                                  WHERE
+                                    patient_id = '$accountID'";
 
     $result = mysqli_query($connection, $getUserAppointmentsQuery);
     if($result === false){
